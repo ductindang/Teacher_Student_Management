@@ -19,6 +19,13 @@ namespace PortalAPI.Controllers
             _passHasher = passHasher;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<User>>> GetAll()
+        {
+            var user = await _userRepo.GetAll();
+            return Ok(user);
+        }
+
         [HttpGet("Email_Pass")]
         public async Task<ActionResult<User>> GetByEmailPass(string email, string password)
         {
@@ -82,6 +89,7 @@ namespace PortalAPI.Controllers
                 var userExist = await _userRepo.GetById(id);
                 if (userExist == null)
                     return NotFound("Cannot find this user id");
+                user.CreatedAt = userExist.CreatedAt;
                 userExist = user;
                 userExist.Id = id;
                 userExist.PasswordHash = _passHasher.HashPassword(user, user.PasswordHash);
