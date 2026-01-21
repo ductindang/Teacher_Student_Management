@@ -2613,13 +2613,6 @@
           "name": {
             "type": "string",
             "nullable": true
-          },
-          "users": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/User"
-            },
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -2775,9 +2768,6 @@
           "roleId": {
             "type": "integer",
             "format": "int32"
-          },
-          "role": {
-            "$ref": "#/components/schemas/Role"
           }
         },
         "additionalProperties": false
