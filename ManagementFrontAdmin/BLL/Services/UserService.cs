@@ -38,7 +38,7 @@ namespace BLL.Services
                     var jsonString = await response.Content.ReadAsStringAsync();
                     var user = JsonConvert.DeserializeObject<User>(jsonString);
 
-                    return user;
+                    return user!;
                 }else if(response.StatusCode == System.Net.HttpStatusCode.NotFound)
                 {
                     return null!;
@@ -52,13 +52,61 @@ namespace BLL.Services
             catch (Exception ex)
             {
                 Console.WriteLine($"An error occured: {ex.Message}");
-                throw new ApplicationException("An error occured while fetching the user by email password.", ex);
+                throw new ApplicationException("An error occured while fetching the user by email password.");
             }
         }
 
-        public Task<User> InsertUser(User user)
+        public async Task<User> InsertUser(User user)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync("api/user", content);
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    var userObj = JsonConvert.DeserializeObject<User>(jsonString);
+                    return userObj!;
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    throw new HttpRequestException($"Request failed with status code {response.StatusCode} and reason: {response.ReasonPhrase}. Response content: {errorContent}");
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine($"An error occured: {ex.Message}");
+                throw new ApplicationException("An error occurred while fetching the user by email and password.");
+            }
+        }
+
+        public async Task<User> GetUserByEmail(string email)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"api/User/Email?email={Uri.EscapeDataString(email)}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    var user = JsonConvert.DeserializeObject<User>(jsonString);
+                    return user!;
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    return null!;
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    throw new HttpRequestException($"Request failed with status code {response.StatusCode} and reason: {response.ReasonPhrase}. Response content: {errorContent}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                throw new ApplicationException("An error occurred while fetching the user by email and password.");
+            }
         }
     }
 }

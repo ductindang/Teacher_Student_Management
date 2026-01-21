@@ -1,0 +1,107 @@
+﻿@using BLL.DTOs
+@using Newtonsoft.Json
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ClientWeb</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ClientWeb.styles.css" asp-append-version="true" />
+
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+
+
+    <link href="~/css/assets/light/authentication/auth-cover.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/assets/dark/authentication/auth-cover.css" rel="stylesheet" type="text/css" />
+
+    <link href="~/css/assets/light/main.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/assets/dark/main.css" rel="stylesheet" type="text/css" />
+
+    <link href="/css/layouts/modern-light-menu/light/plugin.css" rel="stylesheet" type="text/css" />
+    <link href="/css/layouts/modern-light-menu/dark/plugin.css" rel="stylesheet" type="text/css" />
+
+    <style>
+        .notification {
+            position: fixed;
+            top: 60px;
+            right: 20px;
+            font-size: 30px;
+            background-color: #5cb85c;
+            color: white;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+            z-index: 1000;
+        }
+
+        .page-loading {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+
+    </style>
+</head>
+<body>
+    @{
+        var userLogin = Context.Session.GetString("UserLogin");
+        User? user = null;
+        if (!string.IsNullOrEmpty(userLogin))
+        {
+            user = JsonConvert.DeserializeObject<User>(userLogin);
+        }
+    }
+    @if (user != null)
+    {
+        <header>
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                <div class="container-fluid">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ClientWeb</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+    }
+    <div class="container">
+        <main role="main" class="pb-3">
+            <div class="overlay"></div>
+            <div id="successNotification" class="notification"></div>
+
+            <div id="pageLoading" class="page-loading d-none">
+                <div class="spinner-border text-light" role="status"></div>
+            </div>
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2026 - ClientWeb - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
