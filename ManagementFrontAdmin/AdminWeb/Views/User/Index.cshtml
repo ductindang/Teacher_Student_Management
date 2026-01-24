@@ -1,0 +1,118 @@
+﻿@model List<BLL.DTOs.User>
+
+@{
+    ViewData["Title"] = "Danh sách người dùng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section HeaderFiles {
+    <link rel="stylesheet" href="~/plugins/table/datatable/datatables.css" />
+    <link rel="stylesheet" href="~/plugins/table/datatable/extensions/col-reorder/col-reorder.datatables.min.css" />
+    <link rel="stylesheet" href="~/plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.css" />
+    <link rel="stylesheet" href="~/css/plugins/light/table/datatable/dt-global_style.css" />
+    <link rel="stylesheet" href="~/css/plugins/light/table/datatable/custom_dt_custom.css" />
+}
+
+
+
+<div class="page-meta">
+    <nav class="breadcrumb-style-one">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Người dùng</a></li>
+            <li class="breadcrumb-item active">Quản lý người dùng</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="row layout-top-spacing">
+    <div class="col-xl-12">
+        <div class="statbox widget box box-shadow">
+            <div class="widget-header">
+                <h4>Quản lý người dùng</h4>
+            </div>
+
+            <div class="widget-content widget-content-area">
+                <div class="mb-3">
+                    <a asp-controller="User" asp-action="Create" class="btn btn-primary">Thêm mới</a>
+                </div>
+
+                <table id="user-table" class="table style-3 dt-table-hover">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên</th>
+                            <th>Email</th>
+                            <th>SĐT</th>
+                            <th>Địa chỉ</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int index = 1;
+                        }
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <td>@index</td>
+                                <td>@user.Username</td>
+                                <td>@user.Email</td>
+                                <td>@user.Phone</td>
+                                <td class="text-truncate" style="max-width:250px">@user.CreatedAt</td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@user.Id" class="edit">
+                                        ✏️
+                                    </a>
+                                    <a href="#" class="delete" data-user-id="@user.Id">
+                                        🗑
+                                    </a>
+                                </td>
+                            </tr>
+                            index++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section FooterFiles {
+    <script src="~/plugins/table/datatable/datatables.js"></script>
+
+    <script>
+        $('#user-table').DataTable({
+            pageLength: 10,
+            ordering: false,
+            language: {
+                emptyTable: "Chưa có dữ liệu",
+                search: "Tìm kiếm:"
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            let userIdToDelete;
+
+            $('.delete').click(function (e) {
+                e.preventDefault();
+                userIdToDelete = $(this).data('user-id');
+                $('#deleteModal').modal('show');
+            });
+
+            $('#confirmDelete').click(function () {
+                $.ajax({
+                    url: `/user/delete/${userIdToDelete}`,
+                    type: 'DELETE',
+                    success: function () {
+                        location.reload();
+                    }
+                });
+            });
+        });
+    </script>
+}

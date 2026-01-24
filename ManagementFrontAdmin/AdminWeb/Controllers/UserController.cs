@@ -1,13 +1,26 @@
-﻿using BLL.DTOs;
+﻿using AdminWeb.Models;
+using BLL.DTOs;
 using BLL.IServices;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace AdminWeb.Controllers
 {
     public class UserController : Controller
     {
         private readonly IUserService _userService;
+
+        public PagedGetAllRequest GetPage()
+        {
+            PagedGetAllRequest pagedGetAllRequest = new PagedGetAllRequest
+            {
+                Offset = 0,
+                Count = 1000
+            };
+
+            return pagedGetAllRequest;
+        }
 
         public UserController(IUserService userService)
         {
@@ -68,6 +81,21 @@ namespace AdminWeb.Controllers
             {
                 return BadRequest("Create user failed");
             }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index(int offset = 0, int count = 1000)
+        {
+            //PagedGetAllRequest pagedGetAllRequest = new PagedGetAllRequest();
+            //pagedGetAllRequest.Offset = offset;
+            //pagedGetAllRequest.Count = count;
+            
+            var users = await _userService.GetAllUsers();
+
+            ViewData["page"] = "user";
+            ViewData["users"] = users;
+
+            return View(users);
         }
     }
 }

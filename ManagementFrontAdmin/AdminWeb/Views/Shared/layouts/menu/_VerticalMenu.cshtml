@@ -1,0 +1,246 @@
+﻿<style>
+	li a{
+		text-decoration:none;
+	}
+</style>
+<div class="sidebar-wrapper sidebar-theme">
+
+	<nav id="sidebar">
+
+		<div class="navbar-nav theme-brand flex-row text-center">
+			<div class="nav-logo">
+
+				<div class="nav-item theme-text">
+					<a href="#" class="nav-link" title="Appointment-Schedule">MANAGEMENT</a>
+				</div>
+			</div>
+			<div class="nav-item sidebar-toggle">
+				<div class="btn-toggle sidebarCollapse">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+						 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+						 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+						 class="feather feather-chevrons-left">
+						<polyline points="11 17 6 12 11 7"></polyline>
+						<polyline points="18 17 13 12 18 7"></polyline>
+					</svg>
+				</div>
+			</div>
+		</div>
+
+		<div class="profile-info">
+			<div class="user-info">
+				<div class="profile-img">
+					<img src="/images/profile-30.png" alt="avatar">
+				</div>
+				<div class="profile-content">
+					<h6 class="">Administration</h6>
+					<p class="">Quản trị viên</p>
+					@* @{
+						var userJson = httpApiService.Context.Session.GetString("user");
+
+						if (!string.IsNullOrEmpty(userJson))
+						{
+							var user = httpApiService.DeserializeJson<UserLoginModel>(userJson);
+
+							if (user != null)
+							{
+								<h6 class="user-name" title="@user.FullName">@user.FullName</h6>
+								<p class="user-role" title="@user.Role">@user.Role</p>
+							}
+							else
+							{
+								<h6 class="">Invalid user data</h6>
+								<p class="">Could not load user data</p>
+							}
+						}
+						else
+						{
+							<h6 class="">Administration</h6>
+							<p class="">Quản trị viên</p>
+						}
+					} *@
+				</div>
+			</div>
+		</div>
+
+		<ul class="list-unstyled menu-categories" id="accordionExample">
+			<li class="menu @(ViewContext.RouteData.Values["controller"]?.ToString() == "Dashboard" ? "active" : "")">
+
+				<a href="@Url.Action("Index", "Dashboard")" class="dropdown-toggle">
+					<div>
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+							 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+							 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+							 class="feather feather-home">
+							<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+							<polyline points="9 22 9 12 15 12 15 22"></polyline>
+						</svg>
+						<span>Dashboard</span>
+					</div>
+				</a>
+			</li>
+
+			<li class="menu menu-heading">
+				<div class="heading">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+						 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+						 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+						 class="feather feather-minus">
+						<line x1="5" y1="12" x2="19" y2="12"></line>
+					</svg>
+					<span>HỆ THỐNG</span>
+				</div>
+			</li>
+
+			<li class="menu @(ViewContext.RouteData.Values["controller"]?.ToString() == "User" ? "active" : "")">
+				<a href="@Url.Action("Index", "User")" class="dropdown-toggle">
+					<div>
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+							 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+							 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+							 class="feather feather-user">
+							<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+							<circle cx="12" cy="7" r="4"></circle>
+						</svg>
+						<span>User</span>
+					</div>
+				</a>
+			</li>
+
+			<li class="menu @(ViewContext.RouteData.Values["controller"]?.ToString() == "Patient" ? "active" : "")">
+				<a href="@Url.Action("Index", "Patient")" class="dropdown-toggle">
+					<div>
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+							 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+							 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+							 class="feather feather-user">
+							<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+							<circle cx="12" cy="7" r="4"></circle>
+						</svg>
+						<span>Bệnh nhân</span>
+					</div>
+				</a>
+			</li>
+
+			<li class="menu @(ViewContext.RouteData.Values["controller"]?.ToString() == "Profile" ? "active" : "")">
+				<a href="@Url.Action("Index", "Profile")" class="dropdown-toggle">
+					<div>
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+							 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+							 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+							 class="feather feather-user">
+							<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+							<circle cx="12" cy="7" r="4"></circle>
+						</svg>
+						<span>Hồ sơ</span>
+					</div>
+				</a>
+			</li>
+
+			<li class="menu menu-heading">
+				<div class="heading">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+						 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+						 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+						 class="feather feather-minus">
+						<line x1="5" y1="12" x2="19" y2="12"></line>
+					</svg>
+					<span>DỊCH VỤ</span>
+				</div>
+			</li>
+			<li class="menu @(ViewContext.RouteData.Values["controller"]?.ToString() == "DiagnosticService" ? "active" : "")">
+				<a href="@Url.Action("Index", "DiagnosticService")" class="dropdown-toggle">
+					<div>
+						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+							 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+							 class="feather feather-watch">
+							<circle cx="12" cy="12" r="7"></circle>
+							<polyline points="12 9 12 12 13.5 13.5"></polyline>
+							<path d="M16.51 17.35l-.35 3.83a2 2 0 0 1-2 1.82H9.83a2 2 0 0 1-2-1.82l-.35-3.83m.01-10.7l.35-3.83A2 2 0 0 1 9.83 1h4.35a2 2 0 0 1 2 1.82l.35 3.83"></path>
+						</svg>
+						<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+						<line x1="7" y1="7" x2="7.01" y2="7"></line>
+						</svg>
+						<span>Dịch vụ chuẩn đoán</span>
+					</div>
+				</a>
+			</li>
+
+			<li class="menu @(ViewContext.RouteData.Values["controller"]?.ToString() == "Examination" ? "active" : "")">
+				<a href="@Url.Action("Index", "Examination")" class="dropdown-toggle">
+					<div>
+						<svg xmlns="http://www.w3.org/2000/svg" width="24"
+							 height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+							 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+							 class="feather feather-truck">
+							<rect x="1" y="3" width="15" height="13"></rect>
+							<polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+							<circle cx="5.5" cy="18.5" r="2.5"></circle>
+							<circle cx="18.5" cy="18.5" r="2.5"></circle>
+						</svg>
+						<span>Khám bệnh</span>
+					</div>
+				</a>
+			</li>
+
+			<li class="menu menu-heading">
+				<div class="heading">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+						 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+						 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+						 class="feather feather-minus">
+						<line x1="5" y1="12" x2="19" y2="12"></line>
+					</svg>
+					<span>ĐƠN ĐẶT</span>
+				</div>
+			</li>
+
+			<li class="menu @(ViewContext.RouteData.Values["controller"]?.ToString() == "Appointment" ? "active" : "")">
+				<a href="@Url.Action("Index", "Appointment")" class="dropdown-toggle">
+					<div>
+						<svg xmlns="http://www.w3.org/2000/svg"
+							 width="24" height="24" viewBox="0 0 24 24"
+							 fill="none" stroke="currentColor" stroke-width="2"
+							 stroke-linecap="round" stroke-linejoin="round"
+							 class="feather feather-tag">
+							<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+							<line x1="7" y1="7" x2="7.01" y2="7"></line>
+						</svg>
+						<span>Đặt lịch</span>
+					</div>
+				</a>
+			</li>
+
+			<li class="menu menu-heading">
+				<div class="heading">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+						 viewBox="0 0 24 24" fill="none" stroke="currentColor"
+						 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+						 class="feather feather-minus">
+						<line x1="5" y1="12" x2="19" y2="12"></line>
+					</svg>
+					<span>PHÂN QUYỀN</span>
+				</div>
+			</li>
+
+			<li class="menu @(ViewContext.RouteData.Values["controller"]?.ToString() == "Role" ? "active" : "")">
+				<a href="@Url.Action("Index", "Role")" class="dropdown-toggle">
+					<div>
+						<svg xmlns="http://www.w3.org/2000/svg"
+							 width="24" height="24" viewBox="0 0 24 24"
+							 fill="none" stroke="currentColor" stroke-width="2"
+							 stroke-linecap="round" stroke-linejoin="round"
+							 class="feather feather-tag">
+							<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+							<line x1="7" y1="7" x2="7.01" y2="7"></line>
+						</svg>
+						<span>Vai trò</span>
+					</div>
+				</a>
+			</li>
+
+		</ul>
+
+	</nav>
+
+</div>

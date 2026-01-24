@@ -42,7 +42,7 @@ function checkSignIn() {
                 }, 500, function () {
                     $('#successNotification').hide();
                     $('.overlay').fadeOut(500);
-                    window.location.href = '/home/index';
+                    window.location.href = '/dashboard/index';
                 });
             }, 2000);
         },
