@@ -65,17 +65,19 @@ namespace AdminWeb.Controllers
             {
                 Console.WriteLine(ex.ToString());
                 TempData["Error"] = resultMessage;
-                return View();
+                return RedirectToAction("Index");
             }
         }
 
         public async Task<IActionResult> Edit(int id)
         {
             var classObj = await _classService.GetClassById(id);
-            if(classObj != null)
+            ViewBag.Courses = await _courseService.GetAllCourses();
+            ViewBag.Teachers = await _teacherService.GetAllTeachers();
+            if (classObj == null)
             {
                 TempData["Error"] = "Đã xảy ra lỗi khi truy cập lớp học này";
-                return View("Error");
+                return RedirectToAction("Index");
             }
             return View(classObj);
         }
@@ -84,6 +86,12 @@ namespace AdminWeb.Controllers
         public async Task<IActionResult> Edit(Class obj)
         {
             string resultMessage = "Lỗi không thể sửa lớp học này";
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Courses = await _courseService.GetAllCourses();
+                ViewBag.Teachers = await _teacherService.GetAllTeachers();
+                return View(obj);
+            }
             try
             {
                 var classObj = await _classService.UpdateClass(obj);
@@ -98,7 +106,7 @@ namespace AdminWeb.Controllers
             catch(Exception ex)
             {
                 TempData["Error"] = resultMessage;
-                return View("Error");
+                return RedirectToAction("Index");
             }
         }
 
@@ -115,7 +123,7 @@ namespace AdminWeb.Controllers
                     return RedirectToAction("Index");
                 }
                 TempData["Error"] = resultMessage;
-                return View(classObj);
+                return View();
             }
             catch (Exception ex)
             {

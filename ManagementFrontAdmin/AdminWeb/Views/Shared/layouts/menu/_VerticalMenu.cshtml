@@ -107,8 +107,8 @@
 				</a>
 			</li>
 
-			<li class="menu @(ViewContext.RouteData.Values["controller"]?.ToString() == "Patient" ? "active" : "")">
-				<a href="@Url.Action("Index", "Patient")" class="dropdown-toggle">
+			<li class="menu @(ViewContext.RouteData.Values["controller"]?.ToString() == "Teacher" ? "active" : "")">
+				<a href="@Url.Action("Index", "Teacher")" class="dropdown-toggle">
 					<div>
 						<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
 							 viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -117,7 +117,7 @@
 							<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
 							<circle cx="12" cy="7" r="4"></circle>
 						</svg>
-						<span>Bệnh nhân</span>
+						<span>Giáo viên</span>
 					</div>
 				</a>
 			</li>
@@ -166,8 +166,8 @@
 				</a>
 			</li>
 
-			<li class="menu @(ViewContext.RouteData.Values["controller"]?.ToString() == "Examination" ? "active" : "")">
-				<a href="@Url.Action("Index", "Examination")" class="dropdown-toggle">
+			<li class="menu @(ViewContext.RouteData.Values["controller"]?.ToString() == "Course" ? "active" : "")">
+				<a href="@Url.Action("Index", "Course")" class="dropdown-toggle">
 					<div>
 						<svg xmlns="http://www.w3.org/2000/svg" width="24"
 							 height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -178,7 +178,7 @@
 							<circle cx="5.5" cy="18.5" r="2.5"></circle>
 							<circle cx="18.5" cy="18.5" r="2.5"></circle>
 						</svg>
-						<span>Khám bệnh</span>
+						<span>Khóa học</span>
 					</div>
 				</a>
 			</li>
