@@ -2622,10 +2622,18 @@
             "format": "double"
           },
           "isActive": {
-            "type": "boolean"
+            "$ref": "#/components/schemas/CourseStatus"
           }
         },
         "additionalProperties": false
+      },
+      "CourseStatus": {
+        "enum": [
+          0,
+          1
+        ],
+        "type": "integer",
+        "format": "int32"
       },
       "Enrollment": {
         "type": "object",

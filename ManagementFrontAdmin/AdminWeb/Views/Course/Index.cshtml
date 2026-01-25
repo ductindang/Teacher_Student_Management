@@ -1,11 +1,12 @@
-﻿@using BLL.Response
+﻿@using AdminWeb.Helper.Extensions
+@using BLL.DTOs
 
 @{
-    ViewData["Title"] = "Class management";
+    ViewData["Title"] = "Course management";
     Layout = "~/Views/Shared/_LayoutProject.cshtml";
 }
 
-@model IEnumerable<ClassResponse>
+@model IEnumerable<Course>
 
 @section Styles {
     <link href="~/plugins/table/datatable/datatables.css" rel="stylesheet" />
@@ -24,7 +25,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Dịch vụ</a></li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Quản lý lớp học
+                    Quản lý khóa học
                 </li>
             </ol>
         </nav>
@@ -37,25 +38,24 @@
                 <div class="widget-header">
                     <div class="row">
                         <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                            <h4>Quản lý lớp học</h4>
+                            <h4>Quản lý khóa học</h4>
                         </div>
                     </div>
                 </div>
                 <div class="widget-content widget-content-area">
                     <div class="layout-top-spacing ps-3 pe-3 col-12 mb-3">
-                        <a href="@Url.Action("Create", "Class")" class="btn btn-primary">Thêm mới</a>
+                        <a href="@Url.Action("Create", "Course")" class="btn btn-primary">Thêm mới</a>
                     </div>
-                    <table id="class-table" class="table style-3 dt-table-hover" style="width: 100%">
+                    <table id="course-table" class="table style-3 dt-table-hover" style="width: 100%">
                         <thead>
                             <tr>
                                 <th style="width: 5%">STT</th>
-                                <th>Mã lớp học</th>
-                                <th>Tên lớp học</th>
-                                <th>Khóa học</th>
-                                <th>Giáo viên</th>
-                                <th>Ngày bắt đầu</th>
-                                <th>Ngày kết thúc</th>
-                                <th>Số học viên tối đa</th>
+                                <th>Mã khóa học</th>
+                                <th>Tên khóa học</th>
+                                <th>Khoảng thời gian (tháng)</th>
+                                <th>Học phí</th>
+                                <th>Trạng thái</th>
+                                <th>Mô tả</th>
                                 <th class="no-content" style="width: 5%">Thao tác</th>
                             </tr>
                         </thead>
@@ -66,21 +66,20 @@
                             @if (Model != null)
                             {
 
-                                @foreach (var classObj in Model)
+                                @foreach (var course in Model)
                                 {
                                     <tr>
                                         <td>@stt</td>
-                                        <td>@classObj.Id</td>
-                                        <td>@classObj.Name</td>
-                                        <td>@classObj.CourseName</td>
-                                        <td>@classObj.TeacherName</td>
-                                        <td>@classObj.StartDate</td>
-                                        <td>@classObj.EndDate</td>
-                                        <td>@classObj.MaxStudents</td>
+                                        <td>@course.Id</td>
+                                        <td>@course.Name</td>
+                                        <td>@course.Duration</td>
+                                        <td>@course.Price.ToString("N0") đ</td>
+                                        <td>@course.Status.GetDisplayName()</td>
+                                        <td>@course.Description</td>
 
                                         <td class="table-controls d-flex justify-content-center align-items-center pt-2">
                                             <li>
-                                                <a href="@Url.Action("Edit", "Class", new { id = classObj.Id })"
+                                                <a href="@Url.Action("Edit", "Course", new { id = course.Id })"
                                                    class="bs-tooltip edit" data-bs-toggle="tooltip"
                                                    data-bs-placement="top">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -94,7 +93,7 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="#" data-class-id="@classObj.Id"
+                                                <a href="#" data-course-id="@course.Id"
                                                    class="bs-tooltip delete" data-bs-toggle="tooltip"
                                                    data-bs-placement="top">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -130,7 +129,7 @@
     <script src="~/plugins/table/datatable/extensions/col-reorder/col-reorder.datatables.min.js"></script>
     <script src="~/plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.js"></script>
     <script>
-        $('#class-table').DataTable(
+        $('#course-table').DataTable(
             {
                 "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>"
                     + "<'table-responsive'tr>"
@@ -156,25 +155,25 @@
 
     <script>
         $(document).ready(function () {
-            let classIdToDelete;
+            let courseIdToDelete;
 
             $('.delete').on('click', function (e) {
                 e.preventDefault();
-                classIdToDelete = $(this).data('class-id');
+                courseIdToDelete = $(this).data('course-id');
                 $('#deleteModal').modal('show');
             });
 
 
             $('#confirmDelete').on('click', function () {
                 $.ajax({
-                    url: `/Class/Delete`,
+                    url: `/Course/Delete`,
                     type: 'POST',
                     data: {
-                        id: classIdToDelete
+                        id: courseIdToDelete
                     },
                     success: function (response) {
                         Snackbar.show({
-                            text: 'Xóa lớp học thành công',
+                            text: 'Xóa khóa học thành công',
                             textColor: '#ddf5f0',
                             backgroundColor: '#00ab55',
                             actionText: 'Bỏ qua',
@@ -187,7 +186,7 @@
                     },
                     error: function (xhr, status, error) {
                         Snackbar.show({
-                            text: 'Xóa lớp học thất bại',
+                            text: 'Xóa khóa học thất bại',
                             textColor: '#fbeced',
                             backgroundColor: '#e7515a',
                             actionText: 'Bỏ qua',

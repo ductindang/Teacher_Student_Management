@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BLL.DTOs.Enum;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,6 @@ namespace BLL.DTOs
         public string Description { get; set; }
         public int Duration { get; set; }
         public decimal Price { get; set; }
-        public bool IsActive { get; set; }
+        public CourseStatus Status { get; set; }
     }
 }
