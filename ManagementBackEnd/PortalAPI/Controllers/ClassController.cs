@@ -1,5 +1,6 @@
 ﻿using DAL.Models;
 using DAL.Repositories.IRepository;
+using DAL.Response;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,9 +18,9 @@ namespace PortalAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Class>>> GetAll()
+        public async Task<ActionResult<IEnumerable<ClassResponse>>> GetAll()
         {
-            var classes= await _classRepo.GetAll();
+            var classes = await _classRepo.GetAllClassDetail();
             return Ok(classes);
         }
 

@@ -97,5 +97,33 @@ namespace AdminWeb.Controllers
 
             return View(users);
         }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var user = await _userService.GetUserById(id);
+            if(user == null)
+            {
+                TempData["Error"] = "An error occured while accessing this user";
+                return View("Error");
+            }
+
+            return View(user);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(User user)
+        {
+            user.PasswordHash = user.PasswordHash ?? "";
+            string resultMessage = "Cannot update this user";
+            var userUpdate = await _userService.UpdateUser(user);
+            if(userUpdate != null)
+            {
+                TempData["Success"] = "Update this user success";
+                return RedirectToAction("Index");
+            }
+
+            TempData["Error"] = resultMessage;
+            return View(user);
+        }
     }
 }

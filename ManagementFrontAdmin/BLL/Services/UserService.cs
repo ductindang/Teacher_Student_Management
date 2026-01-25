@@ -46,13 +46,13 @@ namespace BLL.Services
                 else
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
-                    throw new HttpRequestException($"Request failed with status code {response.StatusCode} and reason: {response.ReasonPhrase}. Response content: {errorContent}");
+                    return null!;
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"An error occured: {ex.Message}");
-                throw new ApplicationException("An error occured while fetching the user by email password.");
+                return null!;
             }
         }
 
@@ -71,13 +71,38 @@ namespace BLL.Services
                 else
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
-                    throw new HttpRequestException($"Request failed with status code {response.StatusCode} and reason: {response.ReasonPhrase}. Response content: {errorContent}");
+                    return null!;
                 }
             }
             catch(Exception ex)
             {
                 Console.WriteLine($"An error occured: {ex.Message}");
-                throw new ApplicationException("An error occurred while fetching the user by email and password.");
+                return null!;
+            }
+        }
+
+        public async Task<User> UpdateUser(User user)
+        {
+            try
+            {
+                var content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
+                var response = await _httpClient.PutAsync($"api/user/{user.Id}", content);
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    var userObj = JsonConvert.DeserializeObject<User>(jsonString);
+                    return userObj!;
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    return null!;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occured: {ex.Message}");
+                return null!;
             }
         }
 
@@ -99,13 +124,41 @@ namespace BLL.Services
                 else
                 {
                     var errorContent = await response.Content.ReadAsStringAsync();
-                    throw new HttpRequestException($"Request failed with status code {response.StatusCode} and reason: {response.ReasonPhrase}. Response content: {errorContent}");
+                    return null!;
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"An error occurred: {ex.Message}");
-                throw new ApplicationException("An error occurred while fetching the user by email and password.");
+                return null!;
+            }
+        }
+
+        public async Task<User> GetUserById(int id)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"api/User/{id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    var user = JsonConvert.DeserializeObject<User>(jsonString);
+                    return user!;
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    return null!;
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    return null!;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return null!;
             }
         }
     }
