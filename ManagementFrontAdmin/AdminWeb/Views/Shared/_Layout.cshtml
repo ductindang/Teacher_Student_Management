@@ -29,7 +29,7 @@
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
     <link href="~/plugins/apex/apexcharts.css" rel="stylesheet" type="text/css">
     <link href="~/css/customs/assets/light/dashboard/dash_1.css" rel="stylesheet" />
-    <link href="/css/customs/plugins/light/sweetalerts2/custom-sweetalert.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/customs/plugins/light/sweetalerts2/custom-sweetalert.css" rel="stylesheet" type="text/css" />
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
     <!-- Razor Section for Child Page Styles -->
     @RenderSection("HeaderFiles", required: false)
@@ -83,18 +83,18 @@
         </div>
     </div>
     <!-- END LOADER -->
-        <!-- BEGIN NAVBAR -->
-        @await Html.PartialAsync("layouts/navbar/_StyleVerticalMenu")
-        <!-- END NAVBAR -->
+    <!-- BEGIN NAVBAR -->
+    @Html.Partial("layouts/navbar/_StyleVerticalMenu")
+    <!-- END NAVBAR -->
 
     <!-- BEGIN MAIN CONTAINER -->
     <div class="main-container" id="container">
 
         <div class="overlay"></div>
         <div class="search-overlay"></div>
-            <!-- BEGIN SIDEBAR -->
-            @await Html.PartialAsync("layouts/menu/_VerticalMenu")
-            <!-- END SIDEBAR -->
+        <!-- BEGIN SIDEBAR -->
+        @Html.Partial("layouts/menu/_VerticalMenu")
+        <!-- END SIDEBAR -->
         
 
         <!-- BEGIN CONTENT AREA -->
@@ -181,6 +181,8 @@
     <script src="~/js/customs/assets/elements/custom-search.js"></script>
     @* <script src="~/js/customs/app.js"></script> *@
 
+    @RenderSection("FooterFiles", required: false)
+    @await RenderSectionAsync("Scripts", required: false)
 
     <!-- NOTIFICATIONS -->
     @if (TempData["success"] != null)
@@ -213,8 +215,7 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script> *@
 
-    @RenderSection("FooterFiles", required: false)
-    @await RenderSectionAsync("Scripts", required: false)
+   
 
 </body>
 </html>

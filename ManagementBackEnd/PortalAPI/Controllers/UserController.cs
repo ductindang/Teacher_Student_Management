@@ -26,6 +26,17 @@ namespace PortalAPI.Controllers
             return Ok(user);
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<User>> GetById(int id)
+        {
+            var user = await _userRepo.GetById(id);
+            if(user == null)
+            {
+                return NotFound("Cannot find this user");
+            }
+            return Ok(user);
+        }
+
         [HttpGet("Email_Pass")]
         public async Task<ActionResult<User>> GetByEmailPass(string email, string password)
         {
@@ -82,17 +93,23 @@ namespace PortalAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<User>> Update([FromBody] User user, int id)
+        public async Task<ActionResult<User>> Update(int id, [FromBody] User user)
         {
             try
             {
                 var userExist = await _userRepo.GetById(id);
                 if (userExist == null)
                     return NotFound("Cannot find this user id");
-                user.CreatedAt = userExist.CreatedAt;
-                userExist = user;
+                userExist.Username = user.Username;
+                userExist.Email = user.Email;
+                userExist.Phone = user.Phone;
+                userExist.IsActive = user.IsActive;
+                userExist.RoleId = user.RoleId;
                 userExist.Id = id;
-                userExist.PasswordHash = _passHasher.HashPassword(user, user.PasswordHash);
+                if (!string.IsNullOrEmpty(user.PasswordHash))
+                {
+                    userExist.PasswordHash = _passHasher.HashPassword(user, user.PasswordHash);
+                }
 
                 var result = await _userRepo.Update(userExist);
                 return Ok(result);

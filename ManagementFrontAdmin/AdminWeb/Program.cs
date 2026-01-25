@@ -22,6 +22,18 @@ builder.Services.AddHttpClient<IUserService, UserService>(client =>
 {
     client.BaseAddress = new Uri(baseUrl!);
 });
+builder.Services.AddHttpClient<IClassService, ClassService>(client =>
+{
+    client.BaseAddress = new Uri(baseUrl!);
+});
+builder.Services.AddHttpClient<ITeacherService, TeacherService>(client =>
+{
+    client.BaseAddress = new Uri(baseUrl!);
+});
+builder.Services.AddHttpClient<ICourseService, CourseService>(client =>
+{
+    client.BaseAddress = new Uri(baseUrl!);
+});
 
 
 
