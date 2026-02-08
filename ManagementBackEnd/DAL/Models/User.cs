@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using DAL.Models.Enum;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -18,7 +19,7 @@ namespace DAL.Models
         public string Email { get; set; }
         public string? PasswordHash { get; set; }
         public string Phone { get; set; }
-        public string IsActive { get; set; }
+        public EAccountStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public int RoleId { get; set; }
 

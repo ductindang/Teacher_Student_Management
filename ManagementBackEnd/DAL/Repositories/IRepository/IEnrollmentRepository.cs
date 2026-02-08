@@ -1,4 +1,5 @@
 ﻿using DAL.Models;
+using DAL.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace DAL.Repositories.IRepository
 {
     public interface IEnrollmentRepository : IGenericRepository<Enrollment>
     {
+        public Task<IEnumerable<EnrollmentResponse>> GetAllEnrollmentDetail();
     }
 }

@@ -1538,6 +1538,29 @@
         }
       }
     },
+    "/api/Schedule/by-class/{classId}": {
+      "get": {
+        "tags": [
+          "Schedule"
+        ],
+        "parameters": [
+          {
+            "name": "classId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Student": {
       "get": {
         "tags": [
@@ -1727,6 +1750,53 @@
             "name": "id",
             "in": "path",
             "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Student"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Student"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Student"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Student/UpdateAccount": {
+      "put": {
+        "tags": [
+          "Student"
+        ],
+        "parameters": [
+          {
+            "name": "studentId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
             "schema": {
               "type": "integer",
               "format": "int32"
@@ -1976,6 +2046,53 @@
         }
       }
     },
+    "/api/Teacher/UpdateAccount": {
+      "put": {
+        "tags": [
+          "Teacher"
+        ],
+        "parameters": [
+          {
+            "name": "teacherId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Teacher"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Teacher"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Teacher"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/TeacherReview": {
       "get": {
         "tags": [
@@ -2191,6 +2308,29 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/TeacherReview/by-teacher/{teacherId}": {
+      "get": {
+        "tags": [
+          "TeacherReview"
+        ],
+        "parameters": [
+          {
+            "name": "teacherId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -2621,16 +2761,54 @@
             "type": "number",
             "format": "double"
           },
-          "isActive": {
-            "$ref": "#/components/schemas/CourseStatus"
+          "status": {
+            "$ref": "#/components/schemas/ECourseStatus"
           }
         },
         "additionalProperties": false
       },
-      "CourseStatus": {
+      "EAccountStatus": {
         "enum": [
           0,
           1
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "ECourseStatus": {
+        "enum": [
+          0,
+          1
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "EDateOfWeek": {
+        "enum": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "EEnrollStatus": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "EGender": {
+        "enum": [
+          0,
+          1,
+          2
         ],
         "type": "integer",
         "format": "int32"
@@ -2655,8 +2833,7 @@
             "format": "date-time"
           },
           "status": {
-            "type": "string",
-            "nullable": true
+            "$ref": "#/components/schemas/EEnrollStatus"
           }
         },
         "additionalProperties": false
@@ -2720,9 +2897,8 @@
             "type": "integer",
             "format": "int32"
           },
-          "studyDate": {
-            "type": "string",
-            "format": "date-time"
+          "dayOfWeek": {
+            "$ref": "#/components/schemas/EDateOfWeek"
           },
           "startTime": {
             "type": "string",
@@ -2760,8 +2936,7 @@
             "nullable": true
           },
           "gender": {
-            "type": "string",
-            "nullable": true
+            "$ref": "#/components/schemas/EGender"
           },
           "address": {
             "type": "string",
@@ -2811,6 +2986,10 @@
             "type": "integer",
             "format": "int32"
           },
+          "classId": {
+            "type": "integer",
+            "format": "int32"
+          },
           "rating": {
             "type": "integer",
             "format": "int32"
@@ -2849,9 +3028,8 @@
             "type": "string",
             "nullable": true
           },
-          "isActive": {
-            "type": "string",
-            "nullable": true
+          "status": {
+            "$ref": "#/components/schemas/EAccountStatus"
           },
           "createdAt": {
             "type": "string",

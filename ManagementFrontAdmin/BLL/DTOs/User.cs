@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BLL.DTOs.Enum;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace BLL.DTOs
         [Required]
         public string PasswordHash { get; set; }
         public string Phone { get; set; }
-        public string IsActive { get; set; }
+        public EAccountStatus Status { get; set; }
         public DateTime CreatedAt { get; set; }
         public int RoleId { get; set; }
     }

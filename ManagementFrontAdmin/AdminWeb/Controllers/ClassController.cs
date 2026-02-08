@@ -28,6 +28,12 @@ namespace AdminWeb.Controllers
             return View(classes);
         }
 
+        public async Task<IActionResult> GetClassById(int id)
+        {
+            var classObj = await _classService.GetClassById(id);
+            return Ok(classObj);
+        }
+
         public async Task<IActionResult> Create()
         {
             ViewBag.Courses = await _courseService.GetAllCourses();
@@ -72,13 +78,13 @@ namespace AdminWeb.Controllers
         public async Task<IActionResult> Edit(int id)
         {
             var classObj = await _classService.GetClassById(id);
-            ViewBag.Courses = await _courseService.GetAllCourses();
-            ViewBag.Teachers = await _teacherService.GetAllTeachers();
             if (classObj == null)
             {
                 TempData["Error"] = "Đã xảy ra lỗi khi truy cập lớp học này";
                 return RedirectToAction("Index");
             }
+            ViewBag.Courses = await _courseService.GetAllCourses();
+            ViewBag.Teachers = await _teacherService.GetAllTeachers();
             return View(classObj);
         }
 

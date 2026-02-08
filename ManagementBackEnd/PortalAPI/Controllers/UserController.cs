@@ -103,7 +103,7 @@ namespace PortalAPI.Controllers
                 userExist.Username = user.Username;
                 userExist.Email = user.Email;
                 userExist.Phone = user.Phone;
-                userExist.IsActive = user.IsActive;
+                userExist.Status = user.Status;
                 userExist.RoleId = user.RoleId;
                 userExist.Id = id;
                 if (!string.IsNullOrEmpty(user.PasswordHash))

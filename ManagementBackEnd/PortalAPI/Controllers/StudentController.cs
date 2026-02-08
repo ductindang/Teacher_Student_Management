@@ -50,13 +50,14 @@ namespace PortalAPI.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<Student>> Update(int id, [FromBody] Student student)
         {
-            var std = await _studentRepo.GetById(id);
             try
             {
+                var std = await _studentRepo.GetById(id);
                 if (std == null)
                 {
                     return NotFound();
                 }
+                student.UserId = std.UserId;
                 std = student;
                 std.Id = id;
                 var result = await _studentRepo.Update(std);
@@ -66,7 +67,26 @@ namespace PortalAPI.Controllers
             {
                 return BadRequest(error: ex.Message);
             }
+        }
 
+        [HttpPut("UpdateAccount")]
+        public async Task<ActionResult<Student>> UpdateUserForStudent([FromQuery] int studentId, [FromQuery] int userId)
+        {
+            try
+            {
+                var stu = await _studentRepo.GetById(studentId);
+                if (stu == null)
+                {
+                    return NotFound();
+                }
+                stu.UserId = userId;
+                var result = await _studentRepo.Update(stu);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(error: ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]

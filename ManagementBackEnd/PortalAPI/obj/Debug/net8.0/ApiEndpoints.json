@@ -903,6 +903,22 @@
     ]
   },
   {
+    "ContainingType": "PortalAPI.Controllers.ScheduleController",
+    "Method": "GetByClass",
+    "RelativePath": "api/Schedule/by-class/{classId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "classId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "PortalAPI.Controllers.StudentController",
     "Method": "GetAll",
     "RelativePath": "api/Student",
@@ -1017,6 +1033,37 @@
         "Name": "id",
         "Type": "System.Int32",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "DAL.Models.Student",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "PortalAPI.Controllers.StudentController",
+    "Method": "UpdateUserForStudent",
+    "RelativePath": "api/Student/UpdateAccount",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "studentId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": [
@@ -1161,6 +1208,37 @@
     ]
   },
   {
+    "ContainingType": "PortalAPI.Controllers.TeacherController",
+    "Method": "UpdateUserForTeacher",
+    "RelativePath": "api/Teacher/UpdateAccount",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "teacherId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "DAL.Models.Teacher",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "PortalAPI.Controllers.TeacherReviewController",
     "Method": "GetAll",
     "RelativePath": "api/TeacherReview",
@@ -1288,6 +1366,22 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "PortalAPI.Controllers.TeacherReviewController",
+    "Method": "GetByTeacher",
+    "RelativePath": "api/TeacherReview/by-teacher/{teacherId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "teacherId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "PortalAPI.Controllers.UserController",

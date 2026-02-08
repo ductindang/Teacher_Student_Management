@@ -34,6 +34,27 @@ builder.Services.AddHttpClient<ICourseService, CourseService>(client =>
 {
     client.BaseAddress = new Uri(baseUrl!);
 });
+builder.Services.AddHttpClient<IEnrollmentService, EnrollmentService>(client =>
+{
+    client.BaseAddress = new Uri(baseUrl!);
+});
+builder.Services.AddHttpClient<IStudentService, StudentService>(client =>
+{
+    client.BaseAddress = new Uri(baseUrl!);
+});
+builder.Services.AddHttpClient<IPaymentService, PaymentService>(client =>
+{
+    client.BaseAddress = new Uri(baseUrl!);
+});
+builder.Services.AddHttpClient<IScheduleService, ScheduleService>(client =>
+{
+    client.BaseAddress = new Uri(baseUrl!);
+});
+builder.Services.AddHttpClient<ITeacherReviewService, TeacherReviewService>(client =>
+{
+    client.BaseAddress = new Uri(baseUrl!);
+});
+
 
 
 

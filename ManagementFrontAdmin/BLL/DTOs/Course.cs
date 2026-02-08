@@ -14,6 +14,6 @@ namespace BLL.DTOs
         public string Description { get; set; }
         public int Duration { get; set; }
         public decimal Price { get; set; }
-        public CourseStatus Status { get; set; }
+        public ECourseStatus Status { get; set; }
     }
 }

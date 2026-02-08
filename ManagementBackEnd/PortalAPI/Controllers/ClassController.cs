@@ -27,7 +27,7 @@ namespace PortalAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Class>> GetById(int id)
         {
-            var cls = await _classRepo.GetById(id);
+            var cls = await _classRepo.GetClassById(id);
             if (cls == null)
                 return NotFound();
             return Ok(cls);

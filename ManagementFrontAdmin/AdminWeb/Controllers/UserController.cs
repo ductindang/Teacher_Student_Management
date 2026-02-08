@@ -110,20 +110,87 @@ namespace AdminWeb.Controllers
             return View(user);
         }
 
+        //[HttpPost]
+        //public async Task<IActionResult> Edit(User user)
+        //{
+        //    user.PasswordHash = user.PasswordHash ?? "";
+        //    string resultMessage = "Cannot update this user";
+        //    var userUpdate = await _userService.UpdateUser(user);
+        //    if(userUpdate != null)
+        //    {
+        //        TempData["Success"] = "Update this user success";
+        //        return RedirectToAction("Index");
+        //    }
+
+        //    TempData["Error"] = resultMessage;
+        //    return View(user);
+        //}
+
         [HttpPost]
         public async Task<IActionResult> Edit(User user)
         {
-            user.PasswordHash = user.PasswordHash ?? "";
-            string resultMessage = "Cannot update this user";
+            user.PasswordHash ??= "";
+
             var userUpdate = await _userService.UpdateUser(user);
-            if(userUpdate != null)
+
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                if (userUpdate != null)
+                {
+                    return Json(new
+                    {
+                        success = true,
+                        message = "Update this user success"
+                    });
+                }
+
+                return Json(new
+                {
+                    success = false,
+                    message = "Cannot update this user"
+                });
+            }
+
+            if (userUpdate != null)
             {
                 TempData["Success"] = "Update this user success";
                 return RedirectToAction("Index");
             }
 
-            TempData["Error"] = resultMessage;
+            TempData["Error"] = "Cannot update this user";
             return View(user);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(User request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "Dữ liệu không hợp lệ"
+                });
+            }
+
+            var result = await _userService.InsertUser(request);
+
+            if (result == null)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "Không thể tạo tài khoản"
+                });
+            }
+
+            return Json(new
+            {
+                success = true,
+                message = "Tạo tài khoản thành công",
+                userId = result.Id
+            });
+        }
+
     }
 }
