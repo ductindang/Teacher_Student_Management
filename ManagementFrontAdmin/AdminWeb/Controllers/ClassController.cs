@@ -1,4 +1,5 @@
-﻿using BLL.DTOs;
+﻿using AdminWeb.Models;
+using BLL.DTOs;
 using BLL.IServices;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
@@ -11,15 +12,18 @@ namespace AdminWeb.Controllers
         private readonly IClassService _classService;
         private readonly ICourseService _courseService;
         private readonly ITeacherService _teacherService;
+        private readonly IStudentService _studentService;
 
         public ClassController(
-            IClassService classService, 
-            ICourseService courseService, 
-            ITeacherService teacherService)
+            IClassService classService,
+            ICourseService courseService,
+            ITeacherService teacherService,
+            IStudentService studentService)
         {
             _classService = classService;
             _courseService = courseService;
             _teacherService = teacherService;
+            _studentService = studentService;
         }
 
         public async Task<IActionResult> Index()
@@ -83,38 +87,80 @@ namespace AdminWeb.Controllers
                 TempData["Error"] = "Đã xảy ra lỗi khi truy cập lớp học này";
                 return RedirectToAction("Index");
             }
+            var students = await _studentService.GetStudentsByClass(id);
+            var viewModel = new ClassEditViewModel
+            {
+                Class = classObj,
+                Students = students
+            };
             ViewBag.Courses = await _courseService.GetAllCourses();
             ViewBag.Teachers = await _teacherService.GetAllTeachers();
-            return View(classObj);
+            return View(viewModel);
         }
-
         [HttpPost]
-        public async Task<IActionResult> Edit(Class obj)
+        public async Task<IActionResult> Edit(ClassEditViewModel model)
         {
-            string resultMessage = "Lỗi không thể sửa lớp học này";
-            if (!ModelState.IsValid)
+            var validForm = model.Class != null
+                && !string.IsNullOrWhiteSpace(model.Class.Name)
+                && model.Class.CourseId > 0
+                && model.Class.TeacherId > 0
+                && model.Class.MaxStudents > 0
+                && model.Class.StartDate != default
+                && model.Class.EndDate != default
+                && model.Class.EndDate > model.Class.StartDate;
+
+            if (!validForm)
             {
                 ViewBag.Courses = await _courseService.GetAllCourses();
                 ViewBag.Teachers = await _teacherService.GetAllTeachers();
-                return View(obj);
+                TempData["Error"] = "Dữ liệu không hợp lệ";
+                return View(model);
             }
-            try
+
+            var result = await _classService.UpdateClass(model.Class);
+
+            if (result != null)
             {
-                var classObj = await _classService.UpdateClass(obj);
-                if( classObj != null)
-                {
-                    TempData["Success"] = "Chỉnh sửa lớp học thành công";
-                    return RedirectToAction("Index");
-                }
-                TempData["Error"] = resultMessage;
-                return View(classObj);
-            }
-            catch(Exception ex)
-            {
-                TempData["Error"] = resultMessage;
+                TempData["Success"] = "Chỉnh sửa lớp học thành công";
                 return RedirectToAction("Index");
             }
+
+            ViewBag.Courses = await _courseService.GetAllCourses();
+            ViewBag.Teachers = await _teacherService.GetAllTeachers();
+            TempData["Error"] = "Lỗi không thể sửa lớp học này";
+            return View(model);
         }
+
+        //[HttpPost]
+        //public async Task<IActionResult> Edit(Class obj)
+        //{
+        //    string resultMessage = "Lỗi không thể sửa lớp học này";
+        //    if (!ModelState.IsValid)
+        //    {
+        //        ViewBag.Courses = await _courseService.GetAllCourses();
+        //        ViewBag.Teachers = await _teacherService.GetAllTeachers();
+        //        return View(obj);
+        //    }
+        //    try
+        //    {
+        //        var classObj = await _classService.UpdateClass(obj);
+        //        if( classObj != null)
+        //        {
+        //            TempData["Success"] = "Chỉnh sửa lớp học thành công";
+        //            return RedirectToAction("Index");
+        //        }
+        //        TempData["Error"] = resultMessage;
+        //        return View(classObj);
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        TempData["Error"] = resultMessage;
+        //        return RedirectToAction("Index");
+        //    }
+        //}
+
+
+
 
         [HttpPost]
         public async Task<IActionResult> Delete(int id)

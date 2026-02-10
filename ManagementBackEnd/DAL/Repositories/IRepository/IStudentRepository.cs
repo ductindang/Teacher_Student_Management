@@ -1,13 +1,10 @@
 ﻿using DAL.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DAL.Response;
 
 namespace DAL.Repositories.IRepository
 {
     public interface IStudentRepository : IGenericRepository<Student>
     {
+        public Task<IEnumerable<StudentEnrollmentResponse>> GetAllStudentByClass(int classId);
     }
 }

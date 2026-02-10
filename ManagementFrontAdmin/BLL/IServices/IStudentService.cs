@@ -12,6 +12,7 @@ namespace BLL.IServices
     {
         public Task<IEnumerable<Student>> GetAllStudents();
         public Task<Student> GetStudentById(int id);
+        public Task<IEnumerable<StudentEnrollmentRequest>> GetStudentsByClass(int classId);
         public Task<Student> InsertStudent(Student obj);
         public Task<Student> UpdateStudent(Student obj);
         public Task<Student> UpdateAccount(int studentId, int userId);

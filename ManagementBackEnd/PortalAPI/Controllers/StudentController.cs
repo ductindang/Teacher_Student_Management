@@ -32,6 +32,13 @@ namespace PortalAPI.Controllers
             return Ok(std);
         }
 
+        [HttpGet("class")]
+        public async Task<ActionResult<IEnumerable<Student>>> GetAllStudentByClass(int classId)
+        {
+            var students = await _studentRepo.GetAllStudentByClass(classId);
+            return Ok(students);
+        }
+
         [HttpPost]
         public async Task<ActionResult<Student>> Insert([FromBody] Student student)
         {
