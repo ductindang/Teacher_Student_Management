@@ -105,6 +105,30 @@ namespace BLL.Services
             }
         }
 
+        public async Task<Teacher> UpdateAccount(int teacherId, int userId)
+        {
+            try
+            {
+                var response = await _httpClient.PutAsync($"api/teacher/UpdateAccount?teacherId={teacherId}&userId={userId}", null);
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    var teacherObj = JsonConvert.DeserializeObject<Teacher>(jsonString);
+                    return teacherObj!;
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    return null!;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occured: {ex.Message}");
+                return null!;
+            }
+        }
+
         public async Task<Teacher> DeleteTeacher(int id)
         {
             try

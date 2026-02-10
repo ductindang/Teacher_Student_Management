@@ -13,6 +13,7 @@ namespace BLL.IServices
         public Task<Teacher> GetTeacherById(int id);
         public Task<Teacher> InsertTeacher(Teacher obj);
         public Task<Teacher> UpdateTeacher(Teacher obj);
+        public Task<Teacher> UpdateAccount(int teacherId, int userId);
         public Task<Teacher> DeleteTeacher(int id);
     }
 }

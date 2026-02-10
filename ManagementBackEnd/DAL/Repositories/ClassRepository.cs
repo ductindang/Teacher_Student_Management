@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Schema;
 
 namespace DAL.Repositories
 {
@@ -39,6 +40,28 @@ namespace DAL.Repositories
                        };
 
             return await data.ToListAsync();
+        }
+
+        public async Task<ClassResponse> GetClassById(int id)
+        {
+            var data = await (from c in _context.Classes
+                       where c.Id == id
+                       join course in _context.Courses on c.CourseId equals course.Id
+                       join teacher in _context.Teachers on c.TeacherId equals teacher.Id
+                       select new ClassResponse
+                       {
+                           Id = c.Id,
+                           Name = c.Name,
+                           CourseId = c.CourseId,
+                           CourseName = course.Name,
+                           TeacherId = c.TeacherId,
+                           TeacherName = teacher.FullName,
+                           StartDate = c.StartDate,
+                           EndDate = c.EndDate,
+                           MaxStudents = c.MaxStudents
+                       })
+                       .FirstOrDefaultAsync();
+            return data;
         }
     }
 }

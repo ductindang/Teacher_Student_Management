@@ -9,5 +9,6 @@ namespace DAL.Repositories.IRepository
 {
     public interface ITeacherReviewRepository : IGenericRepository<TeacherReview>
     {
+        Task<List<TeacherReview>> GetByTeacherId(int teacherId);
     }
 }

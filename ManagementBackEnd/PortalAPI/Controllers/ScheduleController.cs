@@ -32,6 +32,17 @@ namespace PortalAPI.Controllers
             return Ok(scd);
         }
 
+        [HttpGet("by-class/{classId}")]
+        public async Task<IActionResult> GetByClass(int classId)
+        {
+            var schedules = await _scheduleRepo.GetByClassId(classId);
+
+            if (!schedules.Any())
+                return NotFound("Lớp này chưa có lịch học");
+
+            return Ok(schedules);
+        }
+
         [HttpPost]
         public async Task<ActionResult<Schedule>> Insert([FromBody] Schedule schedule)
         {

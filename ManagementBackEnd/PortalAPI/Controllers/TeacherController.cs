@@ -50,15 +50,37 @@ namespace PortalAPI.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<Teacher>> Update(int id, [FromBody] Teacher teacher)
         {
-            var tec = await _teacherRepo.GetById(id);
             try
             {
+                var tec = await _teacherRepo.GetById(id);
                 if (tec == null)
                 {
                     return NotFound();
                 }
+                teacher.UserId = tec.UserId;
                 tec = teacher;
                 tec.Id = id;
+                var result = await _teacherRepo.Update(tec);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(error: ex.Message);
+            }
+
+        }
+
+        [HttpPut("UpdateAccount")]
+        public async Task<ActionResult<Teacher>> UpdateUserForTeacher([FromQuery] int teacherId, [FromQuery] int userId)
+        {
+            try
+            {
+                var tec = await _teacherRepo.GetById(teacherId);
+                if (tec == null)
+                {
+                    return NotFound();
+                }
+                tec.UserId = userId;
                 var result = await _teacherRepo.Update(tec);
                 return Ok(result);
             }

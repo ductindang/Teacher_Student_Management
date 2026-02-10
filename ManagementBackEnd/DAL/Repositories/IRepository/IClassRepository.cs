@@ -11,5 +11,6 @@ namespace DAL.Repositories.IRepository
     public interface IClassRepository : IGenericRepository<Class>
     {
         public Task<IEnumerable<ClassResponse>> GetAllClassDetail();
+        public Task<ClassResponse> GetClassById(int id);
     }
 }

@@ -9,10 +9,14 @@ namespace AdminWeb.Controllers
     public class TeacherController : Controller
     {
         private readonly ITeacherService _teacherService;
+        private readonly ITeacherReviewService _reviewService;
+        private readonly IUserService _userService;
 
-        public TeacherController(ITeacherService teacherService)
+        public TeacherController(ITeacherService teacherService, ITeacherReviewService reviewService, IUserService userService)
         {
             _teacherService = teacherService;
+            _reviewService = reviewService;
+            _userService = userService;
         }
 
         public async Task<IActionResult> Index()
@@ -57,6 +61,10 @@ namespace AdminWeb.Controllers
                 TempData["Error"] = "Đã xảy ra lỗi khi truy cập giáo viên này";
                 return RedirectToAction("Index");
             }
+            var teacherReviews = await _reviewService.GetByTeacher(id);
+            var teacherAccount = await _userService.GetUserById(teacher.UserId);
+            ViewBag.TeacherReviews = teacherReviews;
+            ViewBag.TeacherAccount = teacherAccount;
             return View(teacher);
         }
 
@@ -102,6 +110,34 @@ namespace AdminWeb.Controllers
                 TempData["Error"] = resultMessage;
                 return View();
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateAccountId(int teacherId, int userId)
+        {
+            var result = await _teacherService.UpdateAccount(teacherId, userId);
+
+            if (result == null)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "Gán tài khoản cho giáo viên thất bại"
+                });
+            }
+
+            return Json(new
+            {
+                success = true,
+                message = "Gán tài khoản cho giáo viên thành công"
+            });
+        }
+
+
+        private async Task<IEnumerable<TeacherReview>> GetTeacherReviewData(int teacherId)
+        {
+            var teacherReviews = await _reviewService.GetByTeacher(teacherId);
+            return teacherReviews;
         }
     }
 }

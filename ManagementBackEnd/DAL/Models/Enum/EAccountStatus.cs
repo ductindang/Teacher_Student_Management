@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace DAL.Models.Enum
 {
-    public enum CourseStatus
+    public enum EAccountStatus
     {
         InActive = 0,
-        Active = 1
+        Active = 1,
     }
 }

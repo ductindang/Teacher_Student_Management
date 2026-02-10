@@ -75,6 +75,58 @@ namespace DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Class");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CourseId = 1,
+                            EndDate = new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MaxStudents = 30,
+                            Name = "C# Basic - Morning",
+                            StartDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeacherId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CourseId = 2,
+                            EndDate = new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MaxStudents = 25,
+                            Name = "C# Advanced - Evening",
+                            StartDate = new DateTime(2025, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeacherId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CourseId = 3,
+                            EndDate = new DateTime(2025, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MaxStudents = 35,
+                            Name = "ASP.NET Core",
+                            StartDate = new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeacherId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CourseId = 4,
+                            EndDate = new DateTime(2025, 2, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MaxStudents = 40,
+                            Name = "SQL Server",
+                            StartDate = new DateTime(2025, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeacherId = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CourseId = 5,
+                            EndDate = new DateTime(2025, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            MaxStudents = 20,
+                            Name = "Clean Architecture",
+                            StartDate = new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeacherId = 5
+                        });
                 });
 
             modelBuilder.Entity("DAL.Models.Course", b =>
@@ -92,9 +144,6 @@ namespace DAL.Migrations
                     b.Property<int>("Duration")
                         .HasColumnType("int");
 
-                    b.Property<int>("IsActive")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -103,9 +152,59 @@ namespace DAL.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Course");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Learn C# basic",
+                            Duration = 30,
+                            Name = "C# Basic",
+                            Price = 3000000m,
+                            Status = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Advanced C#",
+                            Duration = 45,
+                            Name = "C# Advanced",
+                            Price = 5000000m,
+                            Status = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Web API",
+                            Duration = 40,
+                            Name = "ASP.NET Core",
+                            Price = 4500000m,
+                            Status = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Database",
+                            Duration = 25,
+                            Name = "SQL Server",
+                            Price = 2500000m,
+                            Status = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "Best practice",
+                            Duration = 20,
+                            Name = "Clean Architecture",
+                            Price = 4000000m,
+                            Status = 0
+                        });
                 });
 
             modelBuilder.Entity("DAL.Models.Enrollment", b =>
@@ -122,9 +221,8 @@ namespace DAL.Migrations
                     b.Property<DateTime>("EnrollDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<int>("StudentId")
                         .HasColumnType("int");
@@ -132,6 +230,48 @@ namespace DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Enrollment");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ClassId = 1,
+                            EnrollDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = 1,
+                            StudentId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ClassId = 2,
+                            EnrollDate = new DateTime(2025, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = 1,
+                            StudentId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ClassId = 3,
+                            EnrollDate = new DateTime(2025, 2, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = 2,
+                            StudentId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ClassId = 4,
+                            EnrollDate = new DateTime(2025, 1, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = 1,
+                            StudentId = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ClassId = 5,
+                            EnrollDate = new DateTime(2025, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = 1,
+                            StudentId = 5
+                        });
                 });
 
             modelBuilder.Entity("DAL.Models.Payment", b =>
@@ -166,6 +306,58 @@ namespace DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Payment");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Amount = 3000000m,
+                            ClassId = 1,
+                            PaymentDate = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PaymentMethod = "Cash",
+                            Status = "Paid",
+                            StudentId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Amount = 5000000m,
+                            ClassId = 2,
+                            PaymentDate = new DateTime(2025, 1, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PaymentMethod = "Banking",
+                            Status = "Paid",
+                            StudentId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Amount = 4500000m,
+                            ClassId = 3,
+                            PaymentDate = new DateTime(2025, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PaymentMethod = "Momo",
+                            Status = "Paid",
+                            StudentId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Amount = 2500000m,
+                            ClassId = 4,
+                            PaymentDate = new DateTime(2025, 1, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PaymentMethod = "Cash",
+                            Status = "Paid",
+                            StudentId = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Amount = 4000000m,
+                            ClassId = 5,
+                            PaymentDate = new DateTime(2025, 3, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            PaymentMethod = "Banking",
+                            Status = "Pending",
+                            StudentId = 5
+                        });
                 });
 
             modelBuilder.Entity("DAL.Models.Role", b =>
@@ -196,6 +388,9 @@ namespace DAL.Migrations
                     b.Property<int>("ClassId")
                         .HasColumnType("int");
 
+                    b.Property<int>("DayOfWeek")
+                        .HasColumnType("int");
+
                     b.Property<TimeSpan>("EndTime")
                         .HasColumnType("time");
 
@@ -206,12 +401,56 @@ namespace DAL.Migrations
                     b.Property<TimeSpan>("StartTime")
                         .HasColumnType("time");
 
-                    b.Property<DateTime>("StudyDate")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("Id");
 
                     b.ToTable("Schedule");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ClassId = 1,
+                            DayOfWeek = 1,
+                            EndTime = new TimeSpan(0, 10, 0, 0, 0),
+                            Room = "A101",
+                            StartTime = new TimeSpan(0, 8, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ClassId = 2,
+                            DayOfWeek = 2,
+                            EndTime = new TimeSpan(0, 20, 0, 0, 0),
+                            Room = "B202",
+                            StartTime = new TimeSpan(0, 18, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ClassId = 3,
+                            DayOfWeek = 3,
+                            EndTime = new TimeSpan(0, 11, 0, 0, 0),
+                            Room = "C303",
+                            StartTime = new TimeSpan(0, 9, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ClassId = 4,
+                            DayOfWeek = 4,
+                            EndTime = new TimeSpan(0, 16, 0, 0, 0),
+                            Room = "D404",
+                            StartTime = new TimeSpan(0, 14, 0, 0, 0)
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ClassId = 5,
+                            DayOfWeek = 5,
+                            EndTime = new TimeSpan(0, 21, 0, 0, 0),
+                            Room = "E505",
+                            StartTime = new TimeSpan(0, 19, 0, 0, 0)
+                        });
                 });
 
             modelBuilder.Entity("DAL.Models.Student", b =>
@@ -233,9 +472,8 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Gender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -243,6 +481,53 @@ namespace DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Student");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "Ha Noi",
+                            DateOfBirth = new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FullName = "Student One",
+                            Gender = 0,
+                            UserId = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "HCM",
+                            DateOfBirth = new DateTime(2001, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FullName = "Student Two",
+                            Gender = 1,
+                            UserId = 0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Address = "Da Nang",
+                            DateOfBirth = new DateTime(1999, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FullName = "Student Three",
+                            Gender = 0,
+                            UserId = 0
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Address = "Hue",
+                            DateOfBirth = new DateTime(2002, 4, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FullName = "Student Four",
+                            Gender = 1,
+                            UserId = 0
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Address = "Can Tho",
+                            DateOfBirth = new DateTime(2000, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FullName = "Student Five",
+                            Gender = 0,
+                            UserId = 0
+                        });
                 });
 
             modelBuilder.Entity("DAL.Models.Teacher", b =>
@@ -270,6 +555,48 @@ namespace DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Teacher");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Degree = "Master",
+                            Experience = 5,
+                            FullName = "Nguyen Van A",
+                            UserId = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Degree = "PhD",
+                            Experience = 8,
+                            FullName = "Tran Thi B",
+                            UserId = 0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Degree = "Bachelor",
+                            Experience = 3,
+                            FullName = "Le Van C",
+                            UserId = 0
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Degree = "Master",
+                            Experience = 6,
+                            FullName = "Pham Thi D",
+                            UserId = 0
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Degree = "PhD",
+                            Experience = 10,
+                            FullName = "Hoang Van E",
+                            UserId = 0
+                        });
                 });
 
             modelBuilder.Entity("DAL.Models.TeacherReview", b =>
@@ -279,6 +606,9 @@ namespace DAL.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClassId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Comment")
                         .IsRequired()
@@ -299,6 +629,158 @@ namespace DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TeacherReview");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ClassId = 1,
+                            Comment = "Teacher is very dedicated",
+                            CreatedAt = new DateTime(2025, 2, 1, 9, 15, 0, 0, DateTimeKind.Unspecified),
+                            Rating = 5,
+                            StudentId = 1,
+                            TeacherId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ClassId = 1,
+                            Comment = "Easy to understand",
+                            CreatedAt = new DateTime(2025, 2, 2, 10, 30, 0, 0, DateTimeKind.Unspecified),
+                            Rating = 4,
+                            StudentId = 2,
+                            TeacherId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ClassId = 1,
+                            Comment = "Very friendly teacher",
+                            CreatedAt = new DateTime(2025, 2, 3, 14, 45, 0, 0, DateTimeKind.Unspecified),
+                            Rating = 5,
+                            StudentId = 3,
+                            TeacherId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ClassId = 2,
+                            Comment = "Good teaching method",
+                            CreatedAt = new DateTime(2025, 2, 4, 8, 20, 0, 0, DateTimeKind.Unspecified),
+                            Rating = 4,
+                            StudentId = 1,
+                            TeacherId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ClassId = 2,
+                            Comment = "Very professional",
+                            CreatedAt = new DateTime(2025, 2, 5, 13, 10, 0, 0, DateTimeKind.Unspecified),
+                            Rating = 5,
+                            StudentId = 2,
+                            TeacherId = 2
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ClassId = 2,
+                            Comment = "Clear explanation",
+                            CreatedAt = new DateTime(2025, 2, 6, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            Rating = 4,
+                            StudentId = 3,
+                            TeacherId = 2
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ClassId = 3,
+                            Comment = "Helpful and patient",
+                            CreatedAt = new DateTime(2025, 2, 7, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            Rating = 5,
+                            StudentId = 1,
+                            TeacherId = 3
+                        },
+                        new
+                        {
+                            Id = 8,
+                            ClassId = 3,
+                            Comment = "Good class structure",
+                            CreatedAt = new DateTime(2025, 2, 8, 11, 25, 0, 0, DateTimeKind.Unspecified),
+                            Rating = 4,
+                            StudentId = 4,
+                            TeacherId = 3
+                        },
+                        new
+                        {
+                            Id = 9,
+                            ClassId = 3,
+                            Comment = "Excellent knowledge",
+                            CreatedAt = new DateTime(2025, 2, 9, 15, 40, 0, 0, DateTimeKind.Unspecified),
+                            Rating = 5,
+                            StudentId = 5,
+                            TeacherId = 3
+                        },
+                        new
+                        {
+                            Id = 10,
+                            ClassId = 4,
+                            Comment = "Nice teaching style",
+                            CreatedAt = new DateTime(2025, 2, 10, 10, 5, 0, 0, DateTimeKind.Unspecified),
+                            Rating = 4,
+                            StudentId = 2,
+                            TeacherId = 4
+                        },
+                        new
+                        {
+                            Id = 11,
+                            ClassId = 4,
+                            Comment = "Very supportive",
+                            CreatedAt = new DateTime(2025, 2, 11, 14, 30, 0, 0, DateTimeKind.Unspecified),
+                            Rating = 5,
+                            StudentId = 3,
+                            TeacherId = 4
+                        },
+                        new
+                        {
+                            Id = 12,
+                            ClassId = 4,
+                            Comment = "Good interaction",
+                            CreatedAt = new DateTime(2025, 2, 12, 17, 15, 0, 0, DateTimeKind.Unspecified),
+                            Rating = 4,
+                            StudentId = 4,
+                            TeacherId = 4
+                        },
+                        new
+                        {
+                            Id = 13,
+                            ClassId = 5,
+                            Comment = "Great experience",
+                            CreatedAt = new DateTime(2025, 2, 13, 9, 50, 0, 0, DateTimeKind.Unspecified),
+                            Rating = 5,
+                            StudentId = 1,
+                            TeacherId = 5
+                        },
+                        new
+                        {
+                            Id = 14,
+                            ClassId = 5,
+                            Comment = "Well organized class",
+                            CreatedAt = new DateTime(2025, 2, 14, 13, 35, 0, 0, DateTimeKind.Unspecified),
+                            Rating = 4,
+                            StudentId = 4,
+                            TeacherId = 5
+                        },
+                        new
+                        {
+                            Id = 15,
+                            ClassId = 5,
+                            Comment = "Highly recommended",
+                            CreatedAt = new DateTime(2025, 2, 15, 18, 0, 0, 0, DateTimeKind.Unspecified),
+                            Rating = 5,
+                            StudentId = 5,
+                            TeacherId = 5
+                        });
                 });
 
             modelBuilder.Entity("DAL.Models.User", b =>
@@ -316,10 +798,6 @@ namespace DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("IsActive")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
@@ -328,6 +806,9 @@ namespace DAL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("Username")

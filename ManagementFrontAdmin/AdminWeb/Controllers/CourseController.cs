@@ -21,6 +21,12 @@ namespace AdminWeb.Controllers
             return View(courses);
         }
 
+        public async Task<IActionResult> GetCourseById(int id)
+        {
+            var course = await _courseService.GetCourseById(id);
+            return Ok(course);
+        }
+
         public async Task<IActionResult> Create()
         {
             return View();

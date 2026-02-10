@@ -32,12 +32,25 @@ namespace PortalAPI.Controllers
             return Ok(rev);
         }
 
+        [HttpGet("by-teacher/{teacherId}")]
+        public async Task<IActionResult> GetByTeacher(int teacherId)
+        {
+            var reviews = await _reviewRepo.GetByTeacherId(teacherId);
+
+            if (!reviews.Any())
+                return NotFound("Giáo viên này chưa có đánh giá nào!");
+
+            return Ok(reviews);
+        }
+
+
         [HttpPost]
         public async Task<ActionResult<TeacherReview>> Insert([FromBody] TeacherReview review)
         {
             review.Id = 0;
             try
             {
+                review.CreatedAt = DateTime.Now;
                 var rev = await _reviewRepo.Insert(review);
                 return Ok(rev);
             }

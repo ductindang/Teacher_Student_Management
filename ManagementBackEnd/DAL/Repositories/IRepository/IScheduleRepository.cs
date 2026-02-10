@@ -9,5 +9,7 @@ namespace DAL.Repositories.IRepository
 {
     public interface IScheduleRepository : IGenericRepository<Schedule>
     {
+        Task<IEnumerable<Schedule>> InsertMany(IEnumerable<Schedule> schedules);
+        Task<List<Schedule>> GetByClassId(int classId);
     }
 }

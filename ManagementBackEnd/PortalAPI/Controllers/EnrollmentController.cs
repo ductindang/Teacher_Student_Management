@@ -19,7 +19,7 @@ namespace PortalAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Enrollment>>> GetAll()
         {
-            var enrollments = await _enrollRepo.GetAll();
+            var enrollments = await _enrollRepo.GetAllEnrollmentDetail();
             return Ok(enrollments);
         }
 
