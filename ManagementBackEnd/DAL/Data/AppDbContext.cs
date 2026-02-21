@@ -107,6 +107,11 @@ namespace DAL.Data
                 new TeacherReview { Id = 15, TeacherId = 5, StudentId = 5, ClassId = 5, Rating = 5, Comment = "Highly recommended", CreatedAt = new DateTime(2025, 2, 15, 18, 0, 0) }
             );
 
+            modelBuilder.Entity<Role>().HasData(
+                new Role { Id = 1, Name = ERoleName.Student },
+                new Role { Id = 2, Name = ERoleName.Teacher },
+                new Role { Id = 3, Name = ERoleName.Admin }
+            );
 
             modelBuilder.Entity<Course>()
                 .Property(x => x.Price)

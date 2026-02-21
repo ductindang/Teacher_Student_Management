@@ -54,6 +54,10 @@ builder.Services.AddHttpClient<ITeacherReviewService, TeacherReviewService>(clie
 {
     client.BaseAddress = new Uri(baseUrl!);
 });
+builder.Services.AddHttpClient<IRoleService, RoleService>(client =>
+{
+    client.BaseAddress = new Uri(baseUrl!);
+});
 
 
 

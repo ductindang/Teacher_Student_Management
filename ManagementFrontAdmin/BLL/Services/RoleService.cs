@@ -1,39 +1,38 @@
 ﻿using BLL.DTOs;
 using BLL.IServices;
-using BLL.Response;
 using Newtonsoft.Json;
 using System.Text;
 
 namespace BLL.Services
 {
-    public class StudentService : IStudentService
+    public class RoleService : IRoleService
     {
         private readonly HttpClient _httpClient;
 
-        public StudentService(HttpClient httpClient)
+        public RoleService(HttpClient httpClient)
         {
             _httpClient = httpClient;
         }
-        public async Task<IEnumerable<Student>> GetAllStudents()
+        public async Task<IEnumerable<Role>> GetAllRoles()
         {
-            var response = await _httpClient.GetAsync("api/Student");
+            var response = await _httpClient.GetAsync("api/Role");
             response.EnsureSuccessStatusCode();
 
             var jsonString = await response.Content.ReadAsStringAsync();
-            var students = JsonConvert.DeserializeObject<IEnumerable<Student>>(jsonString);
+            var roles = JsonConvert.DeserializeObject<IEnumerable<Role>>(jsonString);
 
-            return students!;
+            return roles!;
         }
 
-        public async Task<Student> GetStudentById(int id)
+        public async Task<Role> GetRoleById(int id)
         {
             try
             {
-                var response = await _httpClient.GetAsync($"api/Student/{id}");
+                var response = await _httpClient.GetAsync($"api/Role/{id}");
                 if (response.IsSuccessStatusCode)
                 {
                     var jsonString = await response.Content.ReadAsStringAsync();
-                    var obj = JsonConvert.DeserializeObject<Student>(jsonString);
+                    var obj = JsonConvert.DeserializeObject<Role>(jsonString);
                     return obj!;
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -53,27 +52,17 @@ namespace BLL.Services
             }
         }
 
-        public async Task<IEnumerable<StudentEnrollmentRequest>> GetStudentsByClass(int classId)
-        {
-            var response = await _httpClient.GetAsync($"api/Student/class?classId={classId}");
-            response.EnsureSuccessStatusCode();
-
-            var jsonString = await response.Content.ReadAsStringAsync();
-            var students = JsonConvert.DeserializeObject<IEnumerable<StudentEnrollmentRequest>>(jsonString);
-
-            return students!;
-        }
-        public async Task<Student> InsertStudent(Student obj)
+        public async Task<Role> InsertRole(Role obj)
         {
             try
             {
                 var content = new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json");
-                var response = await _httpClient.PostAsync("api/Student", content);
+                var response = await _httpClient.PostAsync("api/Role", content);
                 if (response.IsSuccessStatusCode)
                 {
                     var jsonString = await response.Content.ReadAsStringAsync();
-                    var studentObj = JsonConvert.DeserializeObject<Student>(jsonString);
-                    return studentObj!;
+                    var roleObj = JsonConvert.DeserializeObject<Role>(jsonString);
+                    return roleObj!;
                 }
                 else
                 {
@@ -88,17 +77,17 @@ namespace BLL.Services
             }
         }
 
-        public async Task<Student> UpdateStudent(Student obj)
+        public async Task<Role> UpdateRole(Role obj)
         {
             try
             {
                 var content = new StringContent(JsonConvert.SerializeObject(obj), Encoding.UTF8, "application/json");
-                var response = await _httpClient.PutAsync($"api/Student/{obj.Id}", content);
+                var response = await _httpClient.PutAsync($"api/Role/{obj.Id}", content);
                 if (response.IsSuccessStatusCode)
                 {
                     var jsonString = await response.Content.ReadAsStringAsync();
-                    var studentObj = JsonConvert.DeserializeObject<Student>(jsonString);
-                    return studentObj!;
+                    var roleObj = JsonConvert.DeserializeObject<Role>(jsonString);
+                    return roleObj!;
                 }
                 else
                 {
@@ -113,40 +102,16 @@ namespace BLL.Services
             }
         }
 
-        public async Task<Student> UpdateAccount(int studentId, int userId)
+        public async Task<Role> DeleteRole(int id)
         {
             try
             {
-                var response = await _httpClient.PutAsync($"api/student/UpdateAccount?studentId={studentId}&userId={userId}", null);
+                var response = await _httpClient.DeleteAsync($"api/Role/{id}");
                 if (response.IsSuccessStatusCode)
                 {
                     var jsonString = await response.Content.ReadAsStringAsync();
-                    var studentObj = JsonConvert.DeserializeObject<Student>(jsonString);
-                    return studentObj!;
-                }
-                else
-                {
-                    var errorContent = await response.Content.ReadAsStringAsync();
-                    return null!;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An error occured: {ex.Message}");
-                return null!;
-            }
-        }
-
-        public async Task<Student> DeleteStudent(int id)
-        {
-            try
-            {
-                var response = await _httpClient.DeleteAsync($"api/Student/{id}");
-                if (response.IsSuccessStatusCode)
-                {
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    var studentObj = JsonConvert.DeserializeObject<Student>(jsonString);
-                    return studentObj!;
+                    var roleObj = JsonConvert.DeserializeObject<Role>(jsonString);
+                    return roleObj!;
                 }
                 else
                 {

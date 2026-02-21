@@ -103,7 +103,7 @@ namespace DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -243,6 +243,16 @@ namespace DAL.Migrations
                     { 3, 4500000m, 3, new DateTime(2025, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "Momo", "Paid", 3 },
                     { 4, 2500000m, 4, new DateTime(2025, 1, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "Cash", "Paid", 4 },
                     { 5, 4000000m, 5, new DateTime(2025, 3, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), "Banking", "Pending", 5 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Role",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, 0 },
+                    { 2, 1 },
+                    { 3, 2 }
                 });
 
             migrationBuilder.InsertData(
