@@ -1,4 +1,5 @@
-﻿@using BLL.DTOs
+﻿@using AdminWeb.Helper.Extensions
+@using BLL.DTOs
 @using BLL.DTOs.Enum
 @{
     ViewData["Title"] = "Chỉnh sửa giáo viên";
@@ -183,6 +184,19 @@
                                     </div>
                                 </div>
 
+                                <div class="row">
+                                    <input type="hidden" name="RoleId" value="@teacherAccount.RoleId" />
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-4">
+                                            <label>Quyền truy cập <strong class="text-danger">*</strong></label>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   value="@(((ERoleName)teacherAccount.RoleId).GetDisplayName())"
+                                                   readonly />
+                                        </div>
+                                    </div>
+                                </div>
+
 
                                 <button type="button" id="btnUpdateAccount" class="btn btn-primary">Hoàn tất</button>
                             </form>
@@ -230,7 +244,7 @@ else
                             </div>
                         </div>
                     </div>
-
+                    
                     <div class="widget-content widget-content-area edit-account">
                         <div class="col-12">
                             <form id="create-user-form">
@@ -283,6 +297,17 @@ else
                                                     class="form-control"
                                                     asp-items="Html.GetEnumSelectList<EAccountStatus>()">
                                             </select>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <input type="hidden" name="RoleId" value="@( (int)ERoleName.Teacher )" />
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-4">
+                                            <label for="role">Quyền truy cập <strong class="text-danger">*</strong></label>
+                                            <input type="text" class="form-control" value="@ERoleName.Teacher.GetDisplayName()" readonly />
 
                                         </div>
                                     </div>

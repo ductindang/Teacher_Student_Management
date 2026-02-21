@@ -1,4 +1,8 @@
-﻿<style>
+﻿@using AdminWeb.Helper.Extensions
+@using BLL.DTOs
+@using BLL.DTOs.Enum
+@using Newtonsoft.Json
+<style>
 	li a{
 		text-decoration:none;
 	}
@@ -33,19 +37,19 @@
 					<img src="/images/profile-30.png" alt="avatar">
 				</div>
 				<div class="profile-content">
-					<h6 class="">Administration</h6>
-					<p class="">Quản trị viên</p>
-					@* @{
-						var userJson = httpApiService.Context.Session.GetString("user");
+					@* <h6 class="">Administration</h6>
+					<p class="">Quản trị viên</p> *@
+					@{
+						var userJson = Context.Session.GetString("UserLogin");
 
 						if (!string.IsNullOrEmpty(userJson))
 						{
-							var user = httpApiService.DeserializeJson<UserLoginModel>(userJson);
+							var user = JsonConvert.DeserializeObject<User>(userJson);
 
 							if (user != null)
 							{
-								<h6 class="user-name" title="@user.FullName">@user.FullName</h6>
-								<p class="user-role" title="@user.Role">@user.Role</p>
+								<h6 class="user-name" title="@user.Username">@user.Username</h6>
+								<p class="user-role" title="@(((ERoleName)user.RoleId).GetDisplayName())">@(((ERoleName)user.RoleId).GetDisplayName())</p>
 							}
 							else
 							{
@@ -58,7 +62,7 @@
 							<h6 class="">Administration</h6>
 							<p class="">Quản trị viên</p>
 						}
-					} *@
+					}
 				</div>
 			</div>
 		</div>
@@ -191,7 +195,7 @@
 						 class="feather feather-minus">
 						<line x1="5" y1="12" x2="19" y2="12"></line>
 					</svg>
-					<span>ĐƠN ĐẶT</span>
+					<span>ĐĂNG KÝ</span>
 				</div>
 			</li>
 
@@ -207,34 +211,6 @@
 							<line x1="7" y1="7" x2="7.01" y2="7"></line>
 						</svg>
 						<span>Đăng ký lớp</span>
-					</div>
-				</a>
-			</li>
-
-			<li class="menu menu-heading">
-				<div class="heading">
-					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-						 viewBox="0 0 24 24" fill="none" stroke="currentColor"
-						 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-						 class="feather feather-minus">
-						<line x1="5" y1="12" x2="19" y2="12"></line>
-					</svg>
-					<span>PHÂN QUYỀN</span>
-				</div>
-			</li>
-
-			<li class="menu @(ViewContext.RouteData.Values["controller"]?.ToString() == "Role" ? "active" : "")">
-				<a href="@Url.Action("Index", "Role")" class="dropdown-toggle">
-					<div>
-						<svg xmlns="http://www.w3.org/2000/svg"
-							 width="24" height="24" viewBox="0 0 24 24"
-							 fill="none" stroke="currentColor" stroke-width="2"
-							 stroke-linecap="round" stroke-linejoin="round"
-							 class="feather feather-tag">
-							<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-							<line x1="7" y1="7" x2="7.01" y2="7"></line>
-						</svg>
-						<span>Vai trò</span>
 					</div>
 				</a>
 			</li>

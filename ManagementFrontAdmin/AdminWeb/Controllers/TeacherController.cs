@@ -11,12 +11,14 @@ namespace AdminWeb.Controllers
         private readonly ITeacherService _teacherService;
         private readonly ITeacherReviewService _reviewService;
         private readonly IUserService _userService;
+        private readonly IRoleService _roleService;
 
-        public TeacherController(ITeacherService teacherService, ITeacherReviewService reviewService, IUserService userService)
+        public TeacherController(ITeacherService teacherService, ITeacherReviewService reviewService, IUserService userService, IRoleService roleService)
         {
             _teacherService = teacherService;
             _reviewService = reviewService;
             _userService = userService;
+            _roleService = roleService;
         }
 
         public async Task<IActionResult> Index()

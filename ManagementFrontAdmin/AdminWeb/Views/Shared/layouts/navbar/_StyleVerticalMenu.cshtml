@@ -1,4 +1,18 @@
-﻿<div class="header-container container-xxl">
+﻿@using AdminWeb.Helper.Extensions
+@using BLL.DTOs
+@using BLL.DTOs.Enum
+@using Newtonsoft.Json
+
+@{
+	var userJson = Context.Session.GetString("UserLogin");
+	var user = new User();
+
+	if (!string.IsNullOrEmpty(userJson))
+	{
+		user = JsonConvert.DeserializeObject<User>(userJson);
+	}
+}
+<div class="header-container container-xxl">
 	<header class="header navbar navbar-expand-sm expand-header">
 
 		<a href="javascript:void(0);" class="sidebarCollapse">
@@ -86,13 +100,23 @@
 						<div class="media mx-auto">
 							<div class="emoji me-2">&#x1F44B;</div>
 							<div class="media-body">
-								<h5>Bảo Anh Tin</h5>
-								<p>Quản trị viên</p>
+								@{
+									if (user != null)
+									{
+										<h5>@user.Username</h5>
+										<p>@(((ERoleName)user.RoleId).GetDisplayName())</p>
+									}
+									else
+									{
+										<h5 class="">Administration</h5>
+										<p class="">Quản trị viên</p>
+									}
+								}
 							</div>
 						</div>
 					</div>
 					<div class="dropdown-item">
-						<a href="user-profile.html">
+						<a href="@Url.Action("Profile", "User", new {id = user?.Id})">
 							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
 								 viewBox="0 0 24 24" fill="none" stroke="currentColor"
 								 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -105,7 +129,7 @@
 					</div>
 
 					<div class="dropdown-item">
-						<a href="auth-boxed-signin.html">
+						<a href="@Url.Action("SignIn", "User")">
 							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
 								 viewBox="0 0 24 24" fill="none" stroke="currentColor"
 								 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"

@@ -2861,6 +2861,15 @@
         "type": "integer",
         "format": "int32"
       },
+      "ERoleName": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
       "Enrollment": {
         "type": "object",
         "properties": {
@@ -2928,8 +2937,7 @@
             "format": "int32"
           },
           "name": {
-            "type": "string",
-            "nullable": true
+            "$ref": "#/components/schemas/ERoleName"
           }
         },
         "additionalProperties": false
