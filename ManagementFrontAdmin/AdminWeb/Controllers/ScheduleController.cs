@@ -31,32 +31,34 @@ namespace AdminWeb.Controllers
             return Ok(schedules);
         }
 
-        public async Task<IActionResult> Create()
-        {
-            return View();
-        }
+        //public async Task<IActionResult> PopupCreate()
+        //{
+        //    return View();
+        //}
 
         [HttpPost]
         public async Task<IActionResult> Create(Schedule obj)
         {
-            string resultMessage = "Lỗi không thể thêm lịch học này";
-            try
+            if (!IsValidSchedule(obj))
             {
-                var schedule = await _scheduleService.InsertSchedule(obj);
-                if (schedule != null)
-                {
-                    TempData["Success"] = "Thêm mới lịch học thành công";
-                    return RedirectToAction("Index");
-                }
-                TempData["Error"] = resultMessage;
-                return View(schedule);
+                TempData["Error"] = "Dữ liệu lịch học không hợp lệ";
+                return RedirectToAction("Edit", "Class", new { id = obj.ClassId });
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                TempData["Error"] = resultMessage;
-                return RedirectToAction("Index");
-            }
+
+            await _scheduleService.InsertSchedule(obj);
+
+            TempData["Success"] = "Thêm mới lịch học thành công";
+            return RedirectToAction("Edit", "Class", new { id = obj.ClassId });
+        }
+
+        private bool IsValidSchedule(Schedule obj)
+        {
+            if (obj.StartTime < new TimeSpan(7, 0, 0)) return false;
+            if (obj.EndTime > new TimeSpan(19, 0, 0)) return false;
+            if (obj.StartTime >= obj.EndTime) return false;
+            if (string.IsNullOrWhiteSpace(obj.Room)) return false;
+
+            return true;
         }
 
         public async Task<IActionResult> Edit(int id)
@@ -80,15 +82,15 @@ namespace AdminWeb.Controllers
                 if (schedule != null)
                 {
                     TempData["Success"] = "Chỉnh sửa lịch học thành công";
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Edit", "Class", new { id = obj.ClassId });
                 }
                 TempData["Error"] = resultMessage;
-                return View(schedule);
+                return RedirectToAction("Edit", "Class", new { id = obj.ClassId });
             }
             catch (Exception ex)
             {
                 TempData["Error"] = resultMessage;
-                return RedirectToAction("Index");
+                return RedirectToAction("Edit", "Class", new { id = obj.ClassId });
             }
         }
 
@@ -96,22 +98,14 @@ namespace AdminWeb.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var resultMessage = "Xóa lịch học không thành công";
-            try
+            var schedule = await _scheduleService.DeleteSchedule(id);
+            if (schedule != null)
             {
-                var schedule = await _scheduleService.DeleteSchedule(id);
-                if (schedule != null)
-                {
-                    TempData["Success"] = "Xóa lịch học thành công";
-                    return RedirectToAction("Index");
-                }
-                TempData["Error"] = resultMessage;
-                return View();
+                TempData["Success"] = "Xóa lịch học thành công";
+                return RedirectToAction("Edit", "Class", new { id = schedule.ClassId });
             }
-            catch (Exception ex)
-            {
-                TempData["Error"] = resultMessage;
-                return View();
-            }
+            TempData["Error"] = resultMessage;
+            return Ok(resultMessage);
         }
     }
 }

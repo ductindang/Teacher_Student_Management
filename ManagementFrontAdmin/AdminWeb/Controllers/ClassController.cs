@@ -13,17 +13,20 @@ namespace AdminWeb.Controllers
         private readonly ICourseService _courseService;
         private readonly ITeacherService _teacherService;
         private readonly IStudentService _studentService;
+        private readonly IScheduleService _scheduleService;
 
         public ClassController(
             IClassService classService,
             ICourseService courseService,
             ITeacherService teacherService,
-            IStudentService studentService)
+            IStudentService studentService,
+            IScheduleService scheduleService)
         {
             _classService = classService;
             _courseService = courseService;
             _teacherService = teacherService;
             _studentService = studentService;
+            _scheduleService = scheduleService;
         }
 
         public async Task<IActionResult> Index()
@@ -88,10 +91,12 @@ namespace AdminWeb.Controllers
                 return RedirectToAction("Index");
             }
             var students = await _studentService.GetStudentsByClass(id);
+            var schedules = await _scheduleService.GetByClass(id);
             var viewModel = new ClassEditViewModel
             {
                 Class = classObj,
-                Students = students
+                Students = students,
+                Schedules = schedules
             };
             ViewBag.Courses = await _courseService.GetAllCourses();
             ViewBag.Teachers = await _teacherService.GetAllTeachers();
