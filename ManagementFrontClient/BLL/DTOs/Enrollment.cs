@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BLL.DTOs.Enum;
 
 namespace BLL.DTOs
 {
@@ -12,6 +8,6 @@ namespace BLL.DTOs
         public int StudentId { get; set; }
         public int ClassId { get; set; }
         public DateTime EnrollDate { get; set; }
-        public string Status { get; set; }
+        public EEnrollStatus Status { get; set; }
     }
 }

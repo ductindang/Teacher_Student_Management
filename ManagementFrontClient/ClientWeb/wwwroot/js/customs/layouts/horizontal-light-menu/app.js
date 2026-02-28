@@ -24,7 +24,9 @@ var App = function() {
     var categoryScroll = {
         scrollCat: function() {
             var sidebarWrapper = document.querySelectorAll('.sidebar-wrapper li.active')[0];
-            var sidebarWrapperTop = sidebarWrapper.offsetTop - 50;
+            if (sidebarWrapper) {
+                var sidebarWrapperTop = sidebarWrapper.offsetTop - 50;
+            }
             setTimeout(() => {
                 const scroll = document.querySelector('.menu-categories');
                 scroll.scrollTop = sidebarWrapperTop;
@@ -686,8 +688,10 @@ var App = function() {
                     var dropMenu = menu.querySelector('.dropdown-menu');
 
                     var subSubmenu = menu.querySelectorAll('.dropdown-menu.sub-submenu')
-                    
-                    dropMenu.classList.add('scale-up-top-left')
+
+                    if (subSubmenu.length > 0) {
+                        dropMenu.classList.add('scale-up-top-left');
+                    }
 
                     subSubmenu.forEach(subMenu => {
                         subMenu.classList.add('scale-up-top-left-submenu')
