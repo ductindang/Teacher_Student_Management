@@ -1,6 +1,7 @@
 ﻿@using BLL.DTOs
 @using AdminWeb.Helper.Extensions
 @using BLL.DTOs.Enum
+@using BLL.Response
 
 @{
     ViewData["Title"] = "Chỉnh sửa lớp học";
@@ -20,6 +21,7 @@
         padding: 25px;
     }
 </style>
+
 
 @model ClassEditViewModel
 
@@ -151,6 +153,114 @@
 
 
 <div>
+    <!-- BREADCRUMB -->
+    <div class="page-meta">
+        <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Dịch vụ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Quản lý lịch học
+                </li>
+            </ol>
+        </nav>
+    </div>
+    <!-- /BREADCRUMB -->
+    <!-- DATATABLE -->
+    <div class="row layout-top-spacing">
+        <div class="col-xl-12 col-lg-12 col-sm-12">
+            <div class="statbox widget box box-shadow">
+                <div class="widget-header">
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                            <h4>Quản lý lịch học</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-content widget-content-area">
+                    <div class="layout-top-spacing ps-3 pe-3 col-12 mb-3">
+                        <a class="btn btn-primary create" data-classid="@Model.Class.Id">Thêm mới</a>
+                    </div>
+                    <table id="schedule-table" class="table style-3 dt-table-hover" style="width: 100%">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%">STT</th>
+                                <th>Ngày học</th>
+                                <th>Thời gian bắt đầu</th>
+                                <th>Thời gian kết thúc</th>
+                                <th>Phòng học</th>
+                                <th class="no-content" style="width: 5%">Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int stt = 1;
+                            }
+                            @if (Model.Schedules != null)
+                            {
+
+                                @foreach (var schedule in Model.Schedules)
+                                {
+                                    <tr>
+                                        <td>@stt</td>
+                                        <td>@schedule.DayOfWeek.GetDisplayName()</td>
+                                        <td>@schedule.StartTime</td>
+                                        <td>@schedule.EndTime</td>
+                                        <td>@schedule.Room</td>
+
+                                        <td class="table-controls d-flex justify-content-center align-items-center pt-2">
+                                            <li>
+                                                <a href="#"
+                                                   class="bs-tooltip editSchedule"
+                                                   data-id="@schedule.Id"
+                                                   data-classid="@schedule.ClassId"
+                                                   data-day="@((int)schedule.DayOfWeek)"
+                                                   data-start="@schedule.StartTime.ToString(@"hh\:mm")"
+                                                   data-end="@schedule.EndTime.ToString(@"hh\:mm")"
+                                                   data-room="@schedule.Room"
+                                                   data-bs-toggle="tooltip"
+                                                   data-bs-placement="top">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                         stroke-width="2" stroke-linecap="round"
+                                                         stroke-linejoin="round"
+                                                         class="feather feather-edit-2 p-1 br-6 mb-1">
+                                                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                                        </path>
+                                                    </svg>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" data-schedule-id="@schedule.Id"
+                                                   class="bs-tooltip delete" data-bs-toggle="tooltip"
+                                                   data-bs-placement="top">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                         stroke-width="2" stroke-linecap="round"
+                                                         stroke-linejoin="round"
+                                                         class="feather feather-trash p-1 br-6 mb-1">
+                                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                                    </svg>
+                                                </a>
+                                            </li>
+                                        </td>
+                                    </tr>
+
+                                    stt++;
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- /DATATABLE -->
+</div>
+
+<div>
     <!-- DATATABLE -->
     <div class="row layout-top-spacing">
         <div class="col-xl-12 col-lg-12 col-sm-12">
@@ -176,7 +286,7 @@
                         </thead>
                         <tbody>
                             @{
-                                int stt = 1;
+                                int sttStd = 1;
                             }
                             @if (Model.Students != null)
                             {
@@ -184,7 +294,7 @@
                                 @foreach (var student in Model.Students)
                                 {
                                     <tr>
-                                        <td>@stt</td>
+                                        <td>@sttStd</td>
                                         <td>@student.StudentId</td>
                                         <td>@student.Fullname</td>
                                         <td>@student.Gender.GetDisplayName()</td>
@@ -192,7 +302,7 @@
                                         <td>@student.EnrollStatus.GetDisplayName()</td>
                                     </tr>
 
-                                    stt++;
+                                    sttStd++;
                                 }
                             }
 
@@ -205,6 +315,7 @@
 
     <!-- /DATATABLE -->
 </div>
+
 
 @section Scripts {
     <script src="~/plugins/table/datatable/datatables.js"></script>
@@ -233,5 +344,118 @@
                 "pageLength": 10,
                 "ordering": false
             });
+    </script>
+
+    <script>
+        $('#schedule-table').DataTable(
+            {
+                "dom": "<'dt--top-section'<'row'<'col-12 col-sm-6 d-flex justify-content-sm-start justify-content-center'l><'col-12 col-sm-6 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3'f>>>"
+                    + "<'table-responsive'tr>"
+                    + "<'dt--bottom-section d-sm-flex justify-content-sm-between text-center'<'dt--pages-count  mb-sm-0 mb-3'i><'dt--pagination'p>>",
+                "oLanguage": {
+                    "oPaginate": {
+                        "sPrevious": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>',
+                        "sNext": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>'
+                    },
+                    "sEmptyTable": "Chưa có dữ liệu",
+                    "sInfo": "Đang hiển thị trang _PAGE_ của  _PAGES_",
+                    "sSearch": '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>',
+                    "sSearchPlaceholder": "Tìm kiếm...",
+                    "sZeroRecords": "Không có bản ghi nào trùng khớp",
+                    "sLengthMenu": "Kết quả :  _MENU_",
+                },
+                "stripeClasses": [],
+                "lengthMenu": [7, 10, 20, 50],
+                "pageLength": 10,
+                "ordering": false
+            });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            let scheduleIdToDelete;
+
+            $('.delete').on('click', function (e) {
+                e.preventDefault();
+                scheduleIdToDelete = $(this).data('schedule-id');
+                $('#deleteModal').modal('show');
+            });
+
+
+            $('#confirmDelete').on('click', function () {
+                $.ajax({
+                    url: `/Schedule/Delete`,
+                    type: 'POST',
+                    data: {
+                        id: scheduleIdToDelete
+                    },
+                    success: function (response) {
+                        Snackbar.show({
+                            text: 'Xóa lớp học thành công',
+                            textColor: '#ddf5f0',
+                            backgroundColor: '#00ab55',
+                            actionText: 'Bỏ qua',
+                            actionTextColor: '#3b3f5c'
+                        });
+
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+                    },
+                    error: function (xhr, status, error) {
+                        Snackbar.show({
+                            text: 'Xóa lớp học thất bại',
+                            textColor: '#fbeced',
+                            backgroundColor: '#e7515a',
+                            actionText: 'Bỏ qua',
+                            actionTextColor: '#3b3f5c'
+                        });
+                    }
+                });
+
+                $('#deleteModal').modal('hide');
+            });
+
+            $('.create').on('click', function (e) {
+                e.preventDefault();
+
+                var classId = $(this).data('classid');
+                console.log("class id: " + classId);
+
+                $('#scheduleClassId').val(classId);
+
+                $('#createScheduleModal').modal('show');
+            });
+        });
+    </script>
+
+
+    <script>
+        $(document).on('click', '.editSchedule', function (e) {
+            console.log("EDIT CLICKED");
+        });
+        $(document).on('click', '.editSchedule', function (e) {
+            e.preventDefault();
+
+            var scheduleId = $(this).data('id');
+            var classId = $(this).data('classid');
+            var day = $(this).data('day');
+            var start = $(this).data('start') + ":00";
+            var end = $(this).data('end') + ":00";
+            var room = $(this).data('room');
+
+            console.log("start raw:", "[" + start + "]");
+            console.log("length:", start.length);
+
+            $('#scheduleIdEdit').val(scheduleId);
+            $('#scheduleClassIdEdit').val(classId);
+
+            $('select[name="DayOfWeek"]').val(day);
+            $('#startTimeEdit').val(start);
+            $('#endTimeEdit').val(end);
+            $('input[name="Room"]').val(room);
+
+            $('#editScheduleModal').modal('show');
+        });
     </script>
 }

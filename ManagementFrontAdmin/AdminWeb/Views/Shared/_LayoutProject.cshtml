@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using BLL.DTOs
+<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
@@ -44,6 +45,10 @@
 			</div>
 		</div>
 	</div>
+
+	@Html.Partial("~/Views/Schedule/CreatePopup.cshtml", new Schedule())
+	@Html.Partial("~/Views/Schedule/EditPopup.cshtml", new Schedule())
+	
 	<!-- END LOADER -->
 	<!-- BEGIN NAVBAR -->
 	@Html.Partial("~/Views/Shared/layouts/navbar/_StyleVerticalMenu.cshtml")
