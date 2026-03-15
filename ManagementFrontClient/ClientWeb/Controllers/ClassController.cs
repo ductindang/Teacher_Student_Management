@@ -124,11 +124,15 @@ namespace ClientWeb.Controllers
                 {
                     var student = await _studentService.GetStudentByUserId(user.Id);
                     var enrollment = await _enrollmentService.GetEnrollmentByClassStudent(id, student.Id);
-                    var teaReview = await _reviewService.GetByTeacherStudentClass(student.Id, enrollment.ClassId);
+                    if(enrollment != null)
+                    {
+                        var teaReview = await _reviewService.GetByTeacherStudentClass(student.Id, enrollment.ClassId);
+                        ViewBag.TeaReview = teaReview;
+                    }
+                    
                     var teacherReviews = await _reviewService.GetByTeacher(id);
                     ViewBag.StudentObj = student;
                     ViewBag.Enrollment = enrollment;
-                    ViewBag.TeaReview = teaReview;
                     ViewBag.TeacherReviews = teacherReviews;
                 }
             } 

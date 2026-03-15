@@ -203,10 +203,20 @@
             margin-top: 15px;
         }
 
+        #attendanceModal .modal-body {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        #attendanceModal table {
+            width: 100%;
+        }
+
         #attendanceModal thead th {
             position: sticky;
             top: 0;
             background: white;
+            z-index: 2;
         }
     </style>
 }
@@ -512,21 +522,25 @@
 
                                                 <div class="modal-body">
 
-                                                    <table class="table table-bordered">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Thứ</th>
-                                                                <th>Thời gian</th>
-                                                                <th>Ngày học</th>
-                                                                <th>Phòng</th>
-                                                                <th>Trạng thái</th>
-                                                            </tr>
-                                                        </thead>
+                                                    <div class="table-responsive">
 
-                                                        <tbody id="attendance-body">
-                                                        </tbody>
+                                                        <table class="table table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Thứ</th>
+                                                                    <th>Thời gian</th>
+                                                                    <th>Ngày học</th>
+                                                                    <th>Phòng</th>
+                                                                    <th>Trạng thái</th>
+                                                                </tr>
+                                                            </thead>
 
-                                                    </table>
+                                                            <tbody id="attendance-body">
+                                                            </tbody>
+
+                                                        </table>
+
+                                                    </div>
 
                                                 </div>
 

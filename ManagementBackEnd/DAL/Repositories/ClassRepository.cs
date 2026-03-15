@@ -95,7 +95,9 @@ namespace DAL.Repositories
             var data = from c in _context.Classes
                        join course in _context.Courses on c.CourseId equals course.Id
                        join teacher in _context.Teachers on c.TeacherId equals teacher.Id
-                       join schedule in _context.Schedules on c.Id equals schedule.ClassId
+                       join schedule in _context.Schedules
+                            on c.Id equals schedule.ClassId into scheduleGroup
+                            from schedule in scheduleGroup.DefaultIfEmpty()
                        where teacher.Id == teacherId
                              && today >= c.StartDate.Date
                              && today <= c.EndDate.Date
@@ -132,7 +134,9 @@ namespace DAL.Repositories
                 from c in _context.Classes
                 join course in _context.Courses on c.CourseId equals course.Id
                 join teacher in _context.Teachers on c.TeacherId equals teacher.Id
-                join schedule in _context.Schedules on c.Id equals schedule.ClassId
+                join schedule in _context.Schedules
+                    on c.Id equals schedule.ClassId into scheduleGroup
+                    from schedule in scheduleGroup.DefaultIfEmpty()
                 join classImg in _context.ClassImages on c.Id equals classImg.ClassId into imgGroup
                 from classImg in imgGroup.DefaultIfEmpty()
                 where teacher.Id == teacherId
@@ -174,7 +178,9 @@ namespace DAL.Repositories
                 from c in _context.Classes
                 join course in _context.Courses on c.CourseId equals course.Id
                 join teacher in _context.Teachers on c.TeacherId equals teacher.Id
-                join schedule in _context.Schedules on c.Id equals schedule.ClassId
+                join schedule in _context.Schedules
+                    on c.Id equals schedule.ClassId into scheduleGroup
+                    from schedule in scheduleGroup.DefaultIfEmpty()
                 join classImg in _context.ClassImages on c.Id equals classImg.ClassId into imgGroup
                 from classImg in imgGroup.DefaultIfEmpty()
                 where teacher.Id == teacherId
@@ -215,7 +221,9 @@ namespace DAL.Repositories
                 from c in _context.Classes
                 join course in _context.Courses on c.CourseId equals course.Id
                 join teacher in _context.Teachers on c.TeacherId equals teacher.Id
-                join schedule in _context.Schedules on c.Id equals schedule.ClassId
+                join schedule in _context.Schedules
+                    on c.Id equals schedule.ClassId into scheduleGroup
+                    from schedule in scheduleGroup.DefaultIfEmpty()
                 join classImg in _context.ClassImages on c.Id equals classImg.ClassId into imgGroup
                 from classImg in imgGroup.DefaultIfEmpty()
                 where teacher.Id == teacherId
@@ -258,7 +266,9 @@ namespace DAL.Repositories
                        join c in _context.Classes on enroll.ClassId equals c.Id
                        join course in _context.Courses on c.CourseId equals course.Id
                        join teacher in _context.Teachers on c.TeacherId equals teacher.Id
-                       join schedule in _context.Schedules on c.Id equals schedule.ClassId
+                       join schedule in _context.Schedules
+                            on c.Id equals schedule.ClassId into scheduleGroup
+                            from schedule in scheduleGroup.DefaultIfEmpty()
                        where enroll.StudentId == studentId
                              && today >= c.StartDate.Date
                              && today <= c.EndDate.Date
@@ -300,7 +310,9 @@ namespace DAL.Repositories
                 join c in _context.Classes on enroll.ClassId equals c.Id
                 join course in _context.Courses on c.CourseId equals course.Id
                 join teacher in _context.Teachers on c.TeacherId equals teacher.Id
-                join schedule in _context.Schedules on c.Id equals schedule.ClassId
+                join schedule in _context.Schedules
+                    on c.Id equals schedule.ClassId into scheduleGroup
+                    from schedule in scheduleGroup.DefaultIfEmpty()
                 join classImg in _context.ClassImages on c.Id equals classImg.ClassId into imgGroup
                 from classImg in imgGroup.DefaultIfEmpty()
                 where enroll.StudentId == studentId
@@ -344,7 +356,9 @@ namespace DAL.Repositories
                 join c in _context.Classes on enroll.ClassId equals c.Id
                 join course in _context.Courses on c.CourseId equals course.Id
                 join teacher in _context.Teachers on c.TeacherId equals teacher.Id
-                join schedule in _context.Schedules on c.Id equals schedule.ClassId
+                join schedule in _context.Schedules
+                    on c.Id equals schedule.ClassId into scheduleGroup
+                    from schedule in scheduleGroup.DefaultIfEmpty()
                 join classImg in _context.ClassImages on c.Id equals classImg.ClassId into imgGroup
                 from classImg in imgGroup.DefaultIfEmpty()
                 where enroll.StudentId == studentId
@@ -387,7 +401,9 @@ namespace DAL.Repositories
                 join c in _context.Classes on enroll.ClassId equals c.Id
                 join course in _context.Courses on c.CourseId equals course.Id
                 join teacher in _context.Teachers on c.TeacherId equals teacher.Id
-                join schedule in _context.Schedules on c.Id equals schedule.ClassId
+                join schedule in _context.Schedules
+                    on c.Id equals schedule.ClassId into scheduleGroup
+                    from schedule in scheduleGroup.DefaultIfEmpty()
                 join classImg in _context.ClassImages on c.Id equals classImg.ClassId into imgGroup
                 from classImg in imgGroup.DefaultIfEmpty()
                 where enroll.StudentId == studentId
