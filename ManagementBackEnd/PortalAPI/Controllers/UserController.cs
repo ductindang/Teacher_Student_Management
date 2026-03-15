@@ -120,22 +120,22 @@ namespace PortalAPI.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> Delete(int id)
-        {
-            var user = await _userRepo.GetById(id);
-            try
-            {
-                if (user == null)
-                    return NotFound();
+        //[HttpDelete("{id}")]
+        //public async Task<ActionResult<User>> Delete(int id)
+        //{
+        //    var user = await _userRepo.GetById(id);
+        //    try
+        //    {
+        //        if (user == null)
+        //            return NotFound();
 
-                await _userRepo.Delete(user);
-                return Ok(user);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        //        await _userRepo.Delete(user);
+        //        return Ok(user);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
     }
 }

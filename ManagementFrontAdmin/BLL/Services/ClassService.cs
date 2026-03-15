@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,7 +31,7 @@ namespace BLL.Services
             return classes!;
         }
 
-        public async Task<Class> GetClassById(int id)
+        public async Task<ClassResponse> GetClassById(int id)
         {
             try
             {
@@ -38,7 +39,7 @@ namespace BLL.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var jsonString = await response.Content.ReadAsStringAsync();
-                    var obj = JsonConvert.DeserializeObject<Class>(jsonString);
+                    var obj = JsonConvert.DeserializeObject<ClassResponse>(jsonString);
                     return obj!;
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -117,6 +118,34 @@ namespace BLL.Services
                     var jsonString = await response.Content.ReadAsStringAsync();
                     var classObj = JsonConvert.DeserializeObject<Class>(jsonString);
                     return classObj!;
+                }else if(response.StatusCode == HttpStatusCode.Conflict)
+                {
+                    return new Class();
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    return null!;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occured: {ex.Message}");
+                return null!;
+            }
+        }
+
+        public async Task<ClassImage?> UpdateClassImage(ClassImage classImage)
+        {
+            try
+            {
+                var content = new StringContent(JsonConvert.SerializeObject(classImage), Encoding.UTF8, "application/json");
+                var response = await _httpClient.PutAsync($"api/class/classImage/{classImage.ClassId}", content);
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    var classImgObj = JsonConvert.DeserializeObject<ClassImage>(jsonString);
+                    return classImgObj!;
                 }
                 else
                 {

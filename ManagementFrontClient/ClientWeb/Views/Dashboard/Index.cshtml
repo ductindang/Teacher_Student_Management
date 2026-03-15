@@ -1,9 +1,13 @@
 ﻿@using BLL.DTOs
+@using BLL.Response
+@using ClientWeb.Helper.Extensions
 @using Newtonsoft.Json
 @{
     ViewData["Title"] = "Trang chủ";
     Layout = "~/Views/Shared/_LayoutProject.cshtml";
 }
+
+@model List<ClassDetailResponse>
 
 @section HeaderStyles {
     <link rel="stylesheet" href="~/css/customs/assets/light/apps/blog-post.css" />
@@ -104,6 +108,101 @@
             background: #f5f4fa;
             border-radius: 12px;
         }
+
+
+        .classList {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .classCard {
+            background: white;
+            border-radius: 14px;
+            padding: 24px 32px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+            border-left: 6px solid #6651e4;
+            transition: 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .classCard:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 30px rgba(102,81,228,0.12);
+            }
+
+        /* Left side */
+
+        .classTitle {
+            font-size: 20px;
+            font-weight: 700;
+            color: #2b2b2b;
+            margin-bottom: 4px;
+        }
+
+        .classCourse {
+            font-size: 15px;
+            font-weight: 600;
+            color: #6651e4;
+            margin-bottom: 10px;
+        }
+
+        .classInfo {
+            font-size: 14px;
+            color: #555;
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        /* Right side */
+
+        .classTime {
+            background: #f4f2ff;
+            padding: 14px 18px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #3f3d56;
+            line-height: 1.7;
+            min-width: 220px;
+        }
+
+        /* Spacing tweak */
+
+        .classLeft {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .classRight {
+            text-align: right;
+        }
+
+        /* Responsive */
+
+        @@media (max-width: 768px) {
+            .classCard
+
+        {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .classRight {
+            text-align: left;
+            width: 100%;
+        }
+
+        .classTime {
+            width: 100%;
+        }
+
+        }
     </style>
 }
 
@@ -115,6 +214,20 @@
     {
         user = JsonConvert.DeserializeObject<User>(userJson);
     }
+
+    var teacherJson = Context.Session.GetString("Teacher");
+    Teacher teacher = null;
+    if (!string.IsNullOrEmpty(teacherJson))
+    {
+        teacher = JsonConvert.DeserializeObject<Teacher>(teacherJson);
+    }
+
+    var studentJson = Context.Session.GetString("Student");
+    Student student = null;
+    if (!string.IsNullOrEmpty(studentJson))
+    {
+        student = JsonConvert.DeserializeObject<Student>(studentJson);
+    }
 }
 
 <div class="dashboard">
@@ -122,7 +235,19 @@
     <!-- Greeting -->
     <div class="greetingDiv">
         <div class="teacherGreeting">
-            Xin chào @(user?.Username ?? "") 👋
+            Xin chào 
+            @if(teacher != null)
+            {
+                <span>giáo viên @teacher.FullName 👋</span>
+            }
+            else if (student != null)
+            {
+                <span>học viên @student.FullName 👋</span>
+            }
+            else
+            {
+                <span>@(user?.Username ?? "") 👋</span>
+            }
         </div>
 
         <div class="makeFlexGreeting">
@@ -134,11 +259,21 @@
                 Thời gian được hiển thị tại Asia/Saigon +07 (+07:00)
             </div>
         </div>
+        @if (teacher != null)
+        {
+            <div class="motivation-quote">
+                <p class="quote-text">Để trờ thành một người giáo viên đúng nghĩa, bạn phải luôn là một người học trò.</p>
+                <p class="quote-author">- Søren Kierkegaard</p>
+            </div>
+        }
+        else
+        {
+            <div class="motivation-quote">
+                <p class="quote-text">Để trờ thành một người học viên đúng nghĩa, bạn phải luôn là một người biết lắng nghe lời dạy bảo.</p>
+                <p class="quote-author">- Søren Kierkegaard</p>
+            </div>
+        }
 
-        <div class="motivation-quote">
-            <p class="quote-text">Để trờ thành một người giáo viên đúng nghĩa, bạn phải luôn là một người học trò.</p>
-            <p class="quote-author">- Søren Kierkegaard</p>
-        </div>
     </div>
 
     <!-- Alert Card -->
@@ -149,24 +284,72 @@
 
         <div class="alertContent">
             <div class="slotInfo">
-                Slots Marked Available: <strong>0</strong>/120
-                <h3>Mark 120 more slots to meet the requirement</h3>
+                Lịch trình ngày hôm nay
+                <h3>Hãy quản lý lịch của chính bạn</h3>
             </div>
 
             <div class="alertAction">
                 <div class="alertText">
-                    You are running low on available open slots
+                    Xem chi tiết thời khóa biểu trong tuần
                 </div>
-                <button class="primaryBtn">Open Slots</button>
+                <div style="margin-top: 20px">
+                    <a class="primaryBtn" asp-controller="Schedule" asp-action="Index">Lịch trong tuần</a>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- Empty State -->
-    <div class="emptyState">
-        <h3>No Classes Available</h3>
-        <p>You don't have any classes available.</p>
-    </div>
+    @if (Model != null && Model.Any())
+    {
+        <div class="classList">
+            @foreach (var item in Model)
+            {
+                <a asp-controller="Attendance" asp-action="Index" asp-route-scheduleId="@item.ScheduleId" asp-route-classId="@item.Id" class="dropdown-toggle">
+                    <div class="classCard">
+
+                        <div class="classLeft">
+                            <div class="classTitle">@item.Name</div>
+                            <div class="classCourse">@item.CourseName</div>
+
+                            <div class="classInfo">
+                                📅 @item.StartDate.ToString("dd/MM/yyyy")
+                                -
+                                @item.EndDate.ToString("dd/MM/yyyy")
+                            </div>
+
+                            <div class="classInfo">
+                                👥 Tối đa: @item.MaxStudents học viên
+                            </div>
+                        </div>
+
+                        @if(item.StartTime != null && item.EndTime != null)
+                        {
+                            <div class="classRight">
+                                <div class="classTime">
+                                    🗓 @item.DayOfWeek.GetDisplayName() <br />
+                                    ⏰ @item.StartTime?.ToString(@"hh\:mm")
+                                    -
+                                    @item.EndTime?.ToString(@"hh\:mm") <br />
+                                    📍 @item.Room
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </a>
+                
+            }
+        </div>
+    }
+    else
+    {
+        <!-- Empty State -->
+        <div class="emptyState">
+            <h3>Không có lớp học</h3>
+            <p>Bạn không có bất kỳ lớp học nào ngày hôm nay.</p>
+        </div>
+    }
+    
 
 </div>
 

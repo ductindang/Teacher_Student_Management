@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -143,6 +144,10 @@ namespace BLL.Services
                     var jsonString = await response.Content.ReadAsStringAsync();
                     var scheduleObj = JsonConvert.DeserializeObject<Schedule>(jsonString);
                     return scheduleObj!;
+                }
+                else if (response.StatusCode == HttpStatusCode.Conflict)
+                {
+                    return new Schedule();
                 }
                 else
                 {

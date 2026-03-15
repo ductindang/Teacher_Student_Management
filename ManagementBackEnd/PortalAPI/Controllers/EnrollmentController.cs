@@ -32,6 +32,15 @@ namespace PortalAPI.Controllers
             return Ok(erl);
         }
 
+        [HttpGet("by-class_student/{classId}/{studentId}")]
+        public async Task<ActionResult<Enrollment>> GetByClassStudent(int classId, int studentId)
+        {
+            var erl = await _enrollRepo.GetErollmentByClassAndStudent(classId, studentId);
+            if (erl == null)
+                return NotFound();
+            return Ok(erl);
+        }
+
         [HttpPost]
         public async Task<ActionResult<Enrollment>> Insert([FromBody] Enrollment enrollment)
         {

@@ -1,6 +1,7 @@
 ﻿using DAL.Models;
+using DAL.Repositories;
 using DAL.Repositories.IRepository;
-using Microsoft.AspNetCore.Http;
+using DAL.Response;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PortalAPI.Controllers
@@ -10,10 +11,12 @@ namespace PortalAPI.Controllers
     public class ScheduleController : ControllerBase
     {
         private readonly IScheduleRepository _scheduleRepo;
+        private readonly IAttendanceRepository _attendanceRepository;
 
-        public ScheduleController(IScheduleRepository scheduleRepo)
+        public ScheduleController(IScheduleRepository scheduleRepo, IAttendanceRepository attendanceRepository)
         {
             _scheduleRepo = scheduleRepo;
+            _attendanceRepository = attendanceRepository;
         }
 
         [HttpGet]
@@ -41,6 +44,24 @@ namespace PortalAPI.Controllers
                 return NotFound("Lớp này chưa có lịch học");
 
             return Ok(schedules);
+        }
+
+        [HttpGet("by-teacher/{teacherId}")]
+        public async Task<ActionResult<IEnumerable<ClassDetailResponse>>> GetScheduleByTeacherId(int teacherId)
+        {
+            var cls = await _scheduleRepo.GetAllScheduleByTeacher(teacherId);
+            if (cls == null)
+                return NotFound();
+            return Ok(cls);
+        }
+
+        [HttpGet("by-student/{studentId}")]
+        public async Task<ActionResult<IEnumerable<ClassDetailResponse>>> GetScheduleByStudentId(int studentId)
+        {
+            var cls = await _scheduleRepo.GetAllScheduleByStudent(studentId);
+            if (cls == null)
+                return NotFound();
+            return Ok(cls);
         }
 
         [HttpPost]
@@ -83,6 +104,12 @@ namespace PortalAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Schedule>> Delete(int id)
         {
+            var att = await _attendanceRepository.GetAttendanceBySchedule(id);
+
+            if (att != null)
+            {
+                return Conflict("Không thể xóa vì dữ liệu đang được sử dụng");
+            }
             var scd = await _scheduleRepo.GetById(id);
             try
             {

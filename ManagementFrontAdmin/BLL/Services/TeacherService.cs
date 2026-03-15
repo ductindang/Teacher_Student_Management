@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -139,6 +140,10 @@ namespace BLL.Services
                     var jsonString = await response.Content.ReadAsStringAsync();
                     var teacherObj = JsonConvert.DeserializeObject<Teacher>(jsonString);
                     return teacherObj!;
+                }
+                else if (response.StatusCode == HttpStatusCode.Conflict)
+                {
+                    return new Teacher();
                 }
                 else
                 {

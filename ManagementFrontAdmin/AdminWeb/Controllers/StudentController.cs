@@ -98,6 +98,11 @@ namespace AdminWeb.Controllers
             try
             {
                 var student = await _studentService.DeleteStudent(id);
+                if (student.Id != id)
+                {
+                    TempData["Error"] = "Không thể xóa vì dữ liệu đang được sử dụng";
+                    return View();
+                }
                 if (student != null)
                 {
                     TempData["Success"] = "Xóa học viên thành công";

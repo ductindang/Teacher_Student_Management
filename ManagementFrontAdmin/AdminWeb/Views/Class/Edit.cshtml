@@ -14,11 +14,31 @@
     <link href="~/plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.css" rel="stylesheet" />
     <link href="~/css/customs/plugins/light/table/datatable/dt-global_style.css" rel="stylesheet" />
     <link href="~/css/customs/plugins/light/table/datatable/custom_dt_custom.css" rel="stylesheet" />
+
+    <link href="~/plugins/filepond/filepond.min.css" rel="stylesheet" />
+    <link href="~/plugins/filepond/FilePondPluginImagePreview.min.css" rel="stylesheet" />
+    <link href="~/plugins/tagify/tagify.css" rel="stylesheet" />
+    <link href="~/css/customs/plugins/light/editors/quill/quill.snow.css" rel="stylesheet" />
+    <link href="~/css/customs/plugins/light/tagify/custom-tagify.css" rel="stylesheet" />
+    <link href="~/css/customs/plugins/light/filepond/custom-filepond.css" rel="stylesheet" />
+    
+    <link href="~/css/customs/assets/light/apps/blog-create.css" rel="stylesheet" />
+
 }
 
 <style>
     .edit-area {
         padding: 25px;
+    }
+
+    #emptyBox{
+        width: 200px;
+        height: 200px;
+        border: 1px dashed #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
     }
 </style>
 
@@ -54,10 +74,68 @@
                         </div>
                     </div>
                 </div>
+                <form asp-action="EditClassImage"
+                              method="POST"
+                              enctype="multipart/form-data"
+                              id="general-settings">
+                    <input type="hidden" asp-for="Class.Id" />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group mb-4" style="padding: inherit">
+                                <label style="margin-left: 45px; font-size: 18px;">Ảnh lớp học</label>
+
+                                @if (Model.Class.ClassImage != null)
+                                {
+                                    var base64 = Convert.ToBase64String(Model.Class.ClassImage);
+                                    var imgSrc = $"data:image/jpeg;base64,{base64}";
+
+                                    <div class="mb-3">
+                                        <img id="previewImage" src="@imgSrc" style="width:200px;height:200px;object-fit:cover;border-radius:8px;border:1px solid #ddd;" />
+                                    </div>
+
+
+                                }
+                                else
+                                {
+                                    <img id="previewImage" src="" style="width:200px;height:200px;object-fit:cover;border-radius:8px;border:1px solid #ddd;display:none;" />
+                                    <div id="emptyBox">Chưa có ảnh</div>
+                                }
+                                <label class="btn btn-warning" style="margin-top: 20px; margin-left:30px">
+                                    Thay đổi ảnh
+                                    <input type="file"
+                                            id="imageInput"
+                                            name="file"
+                                            accept="image/*"
+                                            hidden />
+                                    <input type="hidden" name="classId" value="@Model.Class.Id" />
+                                </label>
+                                <div id="imageActionButtons" style="display:none; margin-top:15px; padding-left: 17px">
+                                    <button type="submit"
+                                            formaction="@Url.Action("EditClassImage", "Class")"
+                                            formmethod="post"
+                                            class="btn btn-success">
+                                        Lưu ảnh
+                                    </button>
+
+                                    <button type="button"
+                                            id="cancelImageBtn"
+                                            class="btn btn-secondary">
+                                        Huỷ
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+
                 <div class="widget-content widget-content-area edit-area">
                     <div class="col-12">
-                        <form asp-action="Edit" method="POST" id="general-settings">
+                        <form asp-action="Edit"
+                              method="POST"
+                              id="editForm">
                             <input type="hidden" asp-for="Class.Id" />
+
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group mb-4">
@@ -140,8 +218,18 @@
                                 </div>
                             </div>
 
+                            <div class="row">
+                                <div class="row mb-4">
+                                    <div class="col-sm-12">
+                                        <label>Mô tả chi tiết lớp học</label>
+                                        <div id="blog-description"></div>
+                                        <input type="hidden" id="descriptionInput" asp-for="Class.Description" name="Class.Description">
+                                    </div>
+                                </div>
+                            </div>
 
-                            <button type="submit" class="btn btn-primary">Hoàn tất</button>
+
+                            <button id="edit-class-button" type="submit" class="btn btn-primary">Hoàn tất</button>
                         </form>
                     </div>
                 </div>
@@ -321,6 +409,40 @@
     <script src="~/plugins/table/datatable/datatables.js"></script>
     <script src="~/plugins/table/datatable/extensions/col-reorder/col-reorder.datatables.min.js"></script>
     <script src="~/plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.js"></script>
+
+    <script src="~/plugins/editors/quill/quill.js"></script>
+    <script src="~/plugins/filepond/filepond.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginFileValidateType.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginImageExifOrientation.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginImagePreview.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginImageCrop.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginImageResize.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginImageTransform.min.js"></script>
+    <script src="~/plugins/filepond/filepondPluginFileValidateSize.min.js"></script>
+
+
+    <script src="~/plugins/tagify/tagify.min.js"></script>
+    <script src="~/js/customs/assets/apps/blog-create.js"></script>
+
+    <script>
+
+        // load description khi edit
+        var description = `@Html.Raw(Model.Class.Description ?? "")`;
+
+        if (description) {
+            quill.root.innerHTML = description;
+        }
+
+        // khi submit form
+        document.addEventListener("DOMContentLoaded", function () {
+            $('#edit-class-button').on('click', function (e) {
+                var html = quill.root.innerHTML;
+                document.getElementById("descriptionInput").value = html;
+            });
+        });
+
+    </script>
+
     <script>
         $('#student-table').DataTable(
             {
@@ -426,6 +548,56 @@
 
                 $('#createScheduleModal').modal('show');
             });
+
+        });
+
+        $(document).ready(function () {
+
+            const imageInput = document.getElementById("imageInput");
+            const preview = document.getElementById("previewImage");
+            const emptyBox = document.getElementById("emptyBox");
+            const actionButtons = document.getElementById("imageActionButtons");
+            const cancelBtn = document.getElementById("cancelImageBtn");
+
+            if (!imageInput) return;
+
+            const originalImageSrc = preview ? preview.getAttribute("src") : "";
+
+            imageInput.addEventListener("change", function (event) {
+
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = "block";
+
+                    if (emptyBox) emptyBox.style.display = "none";
+
+                    actionButtons.style.display = "block";
+                };
+
+                reader.readAsDataURL(file);
+            });
+
+            if (cancelBtn) {
+                cancelBtn.addEventListener("click", function () {
+
+                    preview.src = originalImageSrc;
+
+                    if (!originalImageSrc) {
+                        preview.style.display = "none";
+                        if (emptyBox) emptyBox.style.display = "flex";
+                    }
+                    console.log("cancel click: " + originalImageSrc);
+
+                    imageInput.value = "";
+                    actionButtons.style.display = "none";
+                });
+            }
+
         });
     </script>
 

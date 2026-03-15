@@ -1,5 +1,6 @@
 ﻿using BLL.DTOs;
 using BLL.IServices;
+using BLL.Response;
 using BLL.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -99,6 +100,11 @@ namespace AdminWeb.Controllers
             try
             {
                 var teacher = await _teacherService.DeleteTeacher(id);
+                if (teacher.Id != id)
+                {
+                    TempData["Error"] = "Không thể xóa vì dữ liệu đang được sử dụng";
+                    return View();
+                }
                 if (teacher != null)
                 {
                     TempData["Success"] = "Xóa giáo viên thành công";
@@ -136,7 +142,7 @@ namespace AdminWeb.Controllers
         }
 
 
-        private async Task<IEnumerable<TeacherReview>> GetTeacherReviewData(int teacherId)
+        private async Task<IEnumerable<TeacherReviewResponse>> GetTeacherReviewData(int teacherId)
         {
             var teacherReviews = await _reviewService.GetByTeacher(teacherId);
             return teacherReviews;

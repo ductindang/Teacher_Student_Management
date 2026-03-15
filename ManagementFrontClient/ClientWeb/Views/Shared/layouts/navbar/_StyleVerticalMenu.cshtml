@@ -1,4 +1,4 @@
-﻿@using AdminWeb.Helper.Extensions
+﻿@using ClientWeb.Helper.Extensions
 @using BLL.DTOs
 @using BLL.DTOs.Enum
 @using Newtonsoft.Json
@@ -9,6 +9,20 @@
     if (!string.IsNullOrEmpty(userJson))
     {
         user = JsonConvert.DeserializeObject<User>(userJson);
+    }
+
+    var teacherJson = Context.Session.GetString("Teacher");
+    Teacher teacher = null;
+    if (!string.IsNullOrEmpty(teacherJson))
+    {
+        teacher = JsonConvert.DeserializeObject<Teacher>(teacherJson);
+    }
+
+    var studentJson = Context.Session.GetString("Student");
+    Student student = null;
+    if (!string.IsNullOrEmpty(studentJson))
+    {
+        student = JsonConvert.DeserializeObject<Student>(studentJson);
     }
 }
 
@@ -90,7 +104,18 @@
                                 @{
                                     if (user != null)
                                     {
-                                        <h5>@user.Username</h5>
+                                        if(teacher != null)
+                                        {
+                                            <h5>@teacher.FullName</h5>
+                                        }
+                                        else if (student != null)
+                                        {
+                                            <h5>@student.FullName</h5>
+                                        }
+                                        else
+                                        {
+                                            <h5>@user.Username</h5>
+                                        }
                                         <p>@(((ERoleName)user.RoleId).GetDisplayName())</p>
                                     }
                                     else
@@ -105,7 +130,7 @@
 
                     <!-- Hồ sơ -->
                     <div class="dropdown-item">
-                        <a href="@Url.Action("Profile", "User")">
+                        <a href="@Url.Action("Profile", "User", new { id = user?.Id })">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                  viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -117,24 +142,10 @@
                         </a>
                     </div>
 
-                    <!-- Lịch sử đặt -->
-                    <div class="dropdown-item">
-                        <a href="@Url.Action("History", "Booking")">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                 class="feather feather-tag">
-                                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-                                <line x1="7" y1="7" x2="7.01" y2="7"></line>
-                            </svg>
-                            <span>Lịch sử đơn đặt</span>
-                        </a>
-                    </div>
-
                     <!-- Logout -->
                     <div class="dropdown-item">
-                        <form asp-controller="Auth" asp-action="Logout" method="post">
-                            <button type="submit" class="btn btn-link p-0 text-start w-100">
+                        <a href="@Url.Action("SignIn", "User")">
+                            <button class="btn btn-link p-0 text-start w-100">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                      viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                      stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -145,7 +156,7 @@
                                 </svg>
                                 <span>Đăng xuất</span>
                             </button>
-                        </form>
+                        </a>
                     </div>
 
                 </div>

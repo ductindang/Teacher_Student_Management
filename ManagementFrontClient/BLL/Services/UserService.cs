@@ -1,11 +1,7 @@
 ﻿using BLL.DTOs;
 using BLL.IServices;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BLL.Services
 {
@@ -82,6 +78,31 @@ namespace BLL.Services
             }
         }
 
+        public async Task<User> UpdateUser(User user)
+        {
+            try
+            {
+                var content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
+                var response = await _httpClient.PutAsync($"api/user/{user.Id}", content);
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    var userObj = JsonConvert.DeserializeObject<User>(jsonString);
+                    return userObj!;
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    return null!;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occured: {ex.Message}");
+                return null!;
+            }
+        }
+
         public async Task<User> GetUserByEmail(string email)
         {
             try
@@ -107,6 +128,34 @@ namespace BLL.Services
             {
                 Console.WriteLine($"An error occurred: {ex.Message}");
                 throw new ApplicationException("An error occurred while fetching the user by email and password.");
+            }
+        }
+
+        public async Task<User> GetUserById(int id)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"api/User/{id}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    var user = JsonConvert.DeserializeObject<User>(jsonString);
+                    return user!;
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    return null!;
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    return null!;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return null!;
             }
         }
     }

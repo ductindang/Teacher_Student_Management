@@ -1,4 +1,5 @@
 ﻿using DAL.Models;
+using DAL.Repositories;
 using DAL.Repositories.IRepository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,16 @@ namespace PortalAPI.Controllers
     public class StudentController : ControllerBase
     {
         private readonly IStudentRepository _studentRepo;
+        private readonly IAttendanceRepository _attendanceRepository;
+        private readonly IEnrollmentRepository _enrollmentRepository;
+        private readonly ITeacherReviewRepository _reviewRepo;
 
-        public StudentController(IStudentRepository studentRepo)
+        public StudentController(IStudentRepository studentRepo, IAttendanceRepository attendanceRepository, IEnrollmentRepository enrollmentRepository, ITeacherReviewRepository reviewRepo)
         {
             _studentRepo = studentRepo;
+            _attendanceRepository = attendanceRepository;
+            _enrollmentRepository = enrollmentRepository;
+            _reviewRepo = reviewRepo;
         }
 
         [HttpGet]
@@ -29,6 +36,17 @@ namespace PortalAPI.Controllers
             var std = await _studentRepo.GetById(id);
             if (std == null)
                 return NotFound();
+            return Ok(std);
+        }
+
+        [HttpGet("userId/{userId}")]
+        public async Task<ActionResult<Student>> GetStudentByUserId(int userId)
+        {
+            var std = await _studentRepo.GetStudentByUserId(userId);
+            if(std == null)
+            {
+                return NotFound();
+            }
             return Ok(std);
         }
 
@@ -99,6 +117,14 @@ namespace PortalAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Student>> Delete(int id)
         {
+            var att = await _attendanceRepository.GetAttendanceByStudent(id);
+            var err = await _enrollmentRepository.GetEnrollmentByStudent(id);
+            var rev = await _reviewRepo.GetByStudent(id);
+
+            if (att != null || err != null || rev != null)
+            {
+                return Conflict("Không thể xóa vì dữ liệu đang được sử dụng");
+            }
             var std = await _studentRepo.GetById(id);
             try
             {

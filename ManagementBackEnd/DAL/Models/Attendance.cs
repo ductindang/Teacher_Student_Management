@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DAL.Models.Enum;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL.Models
 {
@@ -15,6 +11,8 @@ namespace DAL.Models
         public int Id { get; set; }
         public int ScheduleId { get; set; }
         public int StudentId { get; set; }
-        public string Status { get; set; }
+        public int ClassId { get; set; }
+        public DateTime AttendanceDate { get; set; }
+        public EAttendanceStatus Status { get; set; }
     }
 }

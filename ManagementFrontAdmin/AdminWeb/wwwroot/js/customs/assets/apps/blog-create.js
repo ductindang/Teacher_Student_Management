@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ===================================
  *    Blog Description Editor 
  * ===================================
@@ -11,7 +11,7 @@ var quill = new Quill('#blog-description', {
         ['image', 'code-block']
         ]
     },
-    placeholder: 'Write product description...',
+    placeholder: 'Vui lòng viết mô tả thật chi tiết cho lớp học...',
     theme: 'snow'  // or 'bubble'
 });
 

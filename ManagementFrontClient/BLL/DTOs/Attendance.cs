@@ -5,6 +5,7 @@
         public int Id { get; set; }
         public int ScheduleId { get; set; }
         public int StudentId { get; set; }
+        public int ClassId { get; set; }
         public string Status { get; set; }
     }
 }

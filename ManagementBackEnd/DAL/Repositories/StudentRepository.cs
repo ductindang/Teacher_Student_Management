@@ -14,6 +14,12 @@ namespace DAL.Repositories
             _context = context;
         }
 
+        public async Task<Student> GetStudentByUserId(int userId)
+        {
+            var data = await _context.Students.FirstOrDefaultAsync(st => st.UserId == userId);
+            return data;
+        }
+
         public async Task<IEnumerable<StudentEnrollmentResponse>> GetAllStudentByClass(int classId)
         {
             var data = from e in _context.Enrollments

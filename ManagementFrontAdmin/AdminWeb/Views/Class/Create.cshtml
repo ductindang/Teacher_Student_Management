@@ -22,6 +22,15 @@
     <link rel="stylesheet" href="~/css/customs/plugins/dark/tomSelect/custom-tomSelect.css" />
     <link rel="stylesheet" href="~/plugins/tomSelect/tom-select.default.min.css" />
 
+    <link href="~/plugins/filepond/filepond.min.css" rel="stylesheet" />
+    <link href="~/plugins/filepond/FilePondPluginImagePreview.min.css" rel="stylesheet" />
+    <link href="~/plugins/tagify/tagify.css" rel="stylesheet" />
+    <link href="~/css/customs/plugins/light/editors/quill/quill.snow.css" rel="stylesheet" />
+    <link href="~/css/customs/plugins/light/tagify/custom-tagify.css" rel="stylesheet" />
+    <link href="~/css/customs/plugins/light/filepond/custom-filepond.css" rel="stylesheet" />
+
+    <link href="~/css/customs/assets/light/apps/blog-create.css" rel="stylesheet" />
+
     <style>
         #datatable thead th {
             font-weight: bold;
@@ -56,7 +65,7 @@
     </div>
 
     <div class="row mb-4 layout-spacing">
-        <div class="col-xxl-8 col-xl-12">
+        <div class="col-xl-12">
             <div class="statbox widget box box-shadow">
                 <div class="widget-header">
                     <div class="row">
@@ -146,7 +155,17 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Hoàn tất</button>
+                        <div class="row">
+                            <div class="row mb-4">
+                                <div class="col-sm-12">
+                                    <label>Mô tả chi tiết lớp học</label>
+                                    <div id="blog-description"></div>
+                                    <input type="hidden" id="descriptionInput" asp-for="Description" name="Description">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="create-class-button" class="btn btn-primary">Hoàn tất</button>
                     </div>
                 </form>
 
@@ -161,6 +180,29 @@
     <script src="~/plugins/table/datatable/datatables.js"></script>
     <script src="~/plugins/table/datatable/extensions/col-reorder/col-reorder.datatables.min.js"></script>
     <script src="~/plugins/table/datatable/extensions/fixed-columns/fixed-columns.datatables.min.js"></script>
+
+    <script src="~/plugins/editors/quill/quill.js"></script>
+    <script src="~/plugins/filepond/filepond.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginFileValidateType.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginImageExifOrientation.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginImagePreview.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginImageCrop.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginImageResize.min.js"></script>
+    <script src="~/plugins/filepond/FilePondPluginImageTransform.min.js"></script>
+    <script src="~/plugins/filepond/filepondPluginFileValidateSize.min.js"></script>
+
+
+    <script src="~/plugins/tagify/tagify.min.js"></script>
+    <script src="~/js/customs/assets/apps/blog-create.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            $('#create-class-button').on('click', function (e) {
+                var html = quill.root.innerHTML;
+                document.getElementById("descriptionInput").value = html;
+            });
+        });
+    </script>
 
     @* <script src="~/plugins/tomSelect/tom-select.base.js"></script>
     <script src="~/plugins/tomSelect/custom-tom-select.js"></script> *@

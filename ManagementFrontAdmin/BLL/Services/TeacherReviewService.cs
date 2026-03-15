@@ -1,11 +1,8 @@
 ﻿using BLL.DTOs;
 using BLL.IServices;
+using BLL.Response;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BLL.Services
 {
@@ -56,7 +53,7 @@ namespace BLL.Services
             }
         }
 
-        public async Task<IEnumerable<TeacherReview>> GetByTeacher(int teacherId)
+        public async Task<IEnumerable<TeacherReviewResponse>> GetByTeacher(int teacherId)
         {
             try
             {
@@ -64,7 +61,7 @@ namespace BLL.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var jsonString = await response.Content.ReadAsStringAsync();
-                    var obj = JsonConvert.DeserializeObject<IEnumerable<TeacherReview>>(jsonString);
+                    var obj = JsonConvert.DeserializeObject<IEnumerable<TeacherReviewResponse>>(jsonString);
                     return obj!;
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)

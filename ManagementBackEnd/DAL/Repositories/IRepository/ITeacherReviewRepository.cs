@@ -1,14 +1,13 @@
 ﻿using DAL.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DAL.Response;
 
 namespace DAL.Repositories.IRepository
 {
     public interface ITeacherReviewRepository : IGenericRepository<TeacherReview>
     {
-        Task<List<TeacherReview>> GetByTeacherId(int teacherId);
+        Task<List<TeacherReviewResponse>> GetByTeacherId(int teacherId);
+        Task<TeacherReview> GetByTeacherStudentClass(int studentId, int classId);
+        Task<TeacherReview> GetByStudent(int studentId);
+        Task<TeacherReview> GetByClass(int classId);
     }
 }
