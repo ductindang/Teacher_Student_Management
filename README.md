@@ -24,6 +24,7 @@
 
 ####. Second, open ManagementFrontAdmin.sln in ManagementFrontAdmin folder
    - run ManagementFrontAdmin.sln <br>
+
 ####. First, open ManagementFrontClient.sln in ManagementFrontClient folder
    - run ManagementFrontClient.sln
 
