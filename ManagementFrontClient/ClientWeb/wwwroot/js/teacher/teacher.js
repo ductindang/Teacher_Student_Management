@@ -24,11 +24,13 @@ $(document).ready(function () {
         });
 
         row.child(`
-                    <div class="p-3 bg-light border rounded">
-                        <strong>Nhận xét:</strong>
-                        <p class="mb-0 mt-2">${comment}</p>
-                    </div>
-                `).show();
+                <div class="p-3 bg-light border rounded">
+                    <strong>Nhận xét:</strong>
+                    <p class="mb-0 mt-2" style="word-break: break-word; white-space: normal;">
+                        ${comment}
+                    </p>
+                </div>
+            `).show();
 
         tr.addClass('shown');
     });

@@ -116,7 +116,7 @@ namespace ClientWeb.Controllers
                 if (user.RoleId == (int)ERoleName.Teacher)
                 {
                     var students = await _studentService.GetStudentsByClass(id);
-                    var teacherReviews = await _reviewService.GetByTeacher(id);
+                    var teacherReviews = await _reviewService.GetByTeacher(classDetail.TeacherId);
                     ViewBag.Students = students;
                     ViewBag.TeacherReviews = teacherReviews;
                 }
