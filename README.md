@@ -12,13 +12,13 @@
 ####. First, open ManagementAPI.sln in ManagementBackEnd folder
 ####. Connect database
    - Change the connection string to suitable with you SqlServer connection
-   - <img width="1533" height="375" alt="image" src="https://github.com/user-attachments/assets/37e0a940-31ac-41b7-8172-b9cba9a274cd" />
+     <img width="1533" height="375" alt="image" src="https://github.com/user-attachments/assets/37e0a940-31ac-41b7-8172-b9cba9a274cd" />
 
    - Open Package Management Console follow the image
-   - <img width="614" height="759" alt="image" src="https://github.com/user-attachments/assets/93d56077-fa63-4f2d-8ccf-a37634e1a845" />
+     <img width="614" height="759" alt="image" src="https://github.com/user-attachments/assets/93d56077-fa63-4f2d-8ccf-a37634e1a845" />
 
    - Chose Default Project and enter "add-migration Initial" into the Package Manager Console
-   - <img width="1539" height="275" alt="image" src="https://github.com/user-attachments/assets/fc755070-a25d-4688-b5a7-8e55d726d7a1" />
+     <img width="1539" height="275" alt="image" src="https://github.com/user-attachments/assets/fc755070-a25d-4688-b5a7-8e55d726d7a1" />
    - Enter "update-database" into the Package Manager Console to update data table into database
    - Run ManagementAPI.sln
 
