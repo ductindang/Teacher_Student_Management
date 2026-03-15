@@ -2,14 +2,22 @@
 ## Instruction
 ### Install environment
 ####. Watch how to install Visual Studio from url: [https://visualstudio.microsoft.com/downloads/](https://www.youtube.com/watch?v=tRbHlEVEVf0&t=172s) and install .NET 8
+
 ####. Download Sql Server, watch video for instruction: https://www.youtube.com/watch?v=LYR5o8TE7rM&t=81s
+
 ### Clone Project from github
+
 ####. Access into github repo
+
 ####. Take the link github follow the image
   <img width="962" height="476" alt="image" src="https://github.com/user-attachments/assets/c6fc3ac5-f29e-44c6-9ca4-0b4807c3a3b7" />
+
 ####. Open visual studio and clone the repo into your computer
+
 ### Open the Project
+
 ####. First, open ManagementAPI.sln in ManagementBackEnd folder
+
 ####. Connect database
    - Change the connection string to suitable with you SqlServer connection
      <img width="1533" height="375" alt="image" src="https://github.com/user-attachments/assets/37e0a940-31ac-41b7-8172-b9cba9a274cd" />
