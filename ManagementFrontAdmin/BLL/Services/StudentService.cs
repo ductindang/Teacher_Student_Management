@@ -2,6 +2,7 @@
 using BLL.IServices;
 using BLL.Response;
 using Newtonsoft.Json;
+using System.Net;
 using System.Text;
 
 namespace BLL.Services
@@ -36,9 +37,13 @@ namespace BLL.Services
                     var obj = JsonConvert.DeserializeObject<Student>(jsonString);
                     return obj!;
                 }
-                else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                else if (response.StatusCode == HttpStatusCode.NotFound)
                 {
                     return null!;
+                }
+                else if (response.StatusCode == HttpStatusCode.Conflict)
+                {
+                    return new Student();
                 }
                 else
                 {

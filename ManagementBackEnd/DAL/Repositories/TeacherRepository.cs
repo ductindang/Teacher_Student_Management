@@ -1,11 +1,7 @@
 ﻿using DAL.Data;
 using DAL.Models;
 using DAL.Repositories.IRepository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repositories
 {
@@ -15,6 +11,12 @@ namespace DAL.Repositories
         public TeacherRepository(AppDbContext context) : base(context)
         {
             _context = context;
+        }
+
+        public async Task<Teacher> GetTeacherByUserId(int userId)
+        {
+            var data = await _context.Teachers.FirstOrDefaultAsync(st => st.UserId == userId);
+            return data;
         }
     }
 }

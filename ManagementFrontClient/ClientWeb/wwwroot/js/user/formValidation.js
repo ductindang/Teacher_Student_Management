@@ -30,8 +30,8 @@
 
 		return errorMessage.length === 0;
 	} else {
-		passwordError.textContent = 'Password cannot be empty';
-		return false;
+		passwordError.textContent = "";
+		return true;
 	}
 
 }

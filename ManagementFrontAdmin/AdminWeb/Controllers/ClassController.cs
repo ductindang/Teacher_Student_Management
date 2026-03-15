@@ -1,8 +1,11 @@
 ﻿using AdminWeb.Models;
 using BLL.DTOs;
 using BLL.IServices;
+using BLL.Services;
 using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace AdminWeb.Controllers
@@ -51,6 +54,8 @@ namespace AdminWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(Class obj)
         {
+            string resultMessage = "Lỗi không thể thêm lớp học này";
+
             if (obj.EndDate <= obj.StartDate)
             {
                 ModelState.AddModelError("EndDate", "Ngày kết thúc phải lớn hơn ngày bắt đầu");
@@ -58,11 +63,11 @@ namespace AdminWeb.Controllers
 
             if (!ModelState.IsValid)
             {
+                TempData["Error"] = resultMessage;
                 ViewBag.Courses = await _courseService.GetAllCourses();
                 ViewBag.Teachers = await _teacherService.GetAllTeachers();
                 return View(obj);
             }
-            string resultMessage = "Lỗi không thể thêm lớp học này";
             try
             {
                 var classObj = await _classService.InsertClass(obj);
@@ -121,8 +126,19 @@ namespace AdminWeb.Controllers
                 TempData["Error"] = "Dữ liệu không hợp lệ";
                 return View(model);
             }
+            var classModel = new Class
+            {
+                Id = model.Class.Id,
+                CourseId = model.Class.CourseId,
+                TeacherId = model.Class.TeacherId,
+                Name = model.Class.Name,
+                StartDate = model.Class.StartDate,
+                EndDate = model.Class.EndDate,
+                MaxStudents = model.Class.MaxStudents,
+                Description = model.Class.Description
+            };
 
-            var result = await _classService.UpdateClass(model.Class);
+            var result = await _classService.UpdateClass(classModel);
 
             if (result != null)
             {
@@ -136,37 +152,6 @@ namespace AdminWeb.Controllers
             return View(model);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Edit(Class obj)
-        //{
-        //    string resultMessage = "Lỗi không thể sửa lớp học này";
-        //    if (!ModelState.IsValid)
-        //    {
-        //        ViewBag.Courses = await _courseService.GetAllCourses();
-        //        ViewBag.Teachers = await _teacherService.GetAllTeachers();
-        //        return View(obj);
-        //    }
-        //    try
-        //    {
-        //        var classObj = await _classService.UpdateClass(obj);
-        //        if( classObj != null)
-        //        {
-        //            TempData["Success"] = "Chỉnh sửa lớp học thành công";
-        //            return RedirectToAction("Index");
-        //        }
-        //        TempData["Error"] = resultMessage;
-        //        return View(classObj);
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        TempData["Error"] = resultMessage;
-        //        return RedirectToAction("Index");
-        //    }
-        //}
-
-
-
-
         [HttpPost]
         public async Task<IActionResult> Delete(int id)
         {
@@ -174,6 +159,11 @@ namespace AdminWeb.Controllers
             try
             {
                 var classObj = await _classService.DeleteClass(id);
+                if (classObj.Id != id)
+                {
+                    TempData["Error"] = "Không thể xóa vì dữ liệu đang được sử dụng";
+                    return View();
+                }
                 if(classObj != null)
                 {
                     TempData["Success"] = "Xóa lớp học thành công";
@@ -187,6 +177,34 @@ namespace AdminWeb.Controllers
                 TempData["Error"] = resultMessage;
                 return View("Error");
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditClassImage(IFormFile file, int classId)
+        {
+            if (file != null)
+            {
+                using var ms = new MemoryStream();
+                await file.CopyToAsync(ms);
+
+                var imageClass = new ClassImage
+                {
+                    Id = 0,
+                    ClassId = classId,
+                    ClassImg = ms.ToArray()
+                };
+                var classimg = await _classService.UpdateClassImage(imageClass);
+                if( classimg != null)
+                {
+                    TempData["Success"] = "Cập nhật ảnh lớp học thành công";
+                }
+                else
+                {
+                    TempData["Success"] = "Lỗi khi cập nhật ảnh này";
+                }
+            }
+
+            return RedirectToAction("Edit", new { id = classId });
         }
     }
 }

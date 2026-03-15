@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Net.NetworkInformation;
 using System.Reflection;
 
-namespace AdminWeb.Helper.Extensions
+namespace ClientWeb.Helper.Extensions
 {
     public static class EnumExtensions
     {

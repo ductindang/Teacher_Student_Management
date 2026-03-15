@@ -63,6 +63,7 @@ namespace AdminWeb.Controllers
             try
             {
                 user.RoleId = (int)ERoleName.Admin;
+                user.Status = EAccountStatus.Active;
                 var newUser = await _userService.InsertUser(user);
                 if (newUser == null)
                 {
@@ -186,7 +187,7 @@ namespace AdminWeb.Controllers
             var user = await _userService.GetUserById(id);
             if (user == null)
             {
-                TempData["Error"] = "Lỗi khi truy cập người hồ sơ";
+                TempData["Error"] = "Lỗi khi truy cập hồ sơ";
                 return View("Error");
             }
 

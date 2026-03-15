@@ -53,6 +53,34 @@ namespace BLL.Services
             }
         }
 
+        public async Task<Student> GetStudentByUserId(int userId)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"api/Student/userId/{userId}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    var obj = JsonConvert.DeserializeObject<Student>(jsonString);
+                    return obj!;
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    return null!;
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    return null!;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return null!;
+            }
+        }
+
         public async Task<IEnumerable<StudentEnrollmentRequest>> GetStudentsByClass(int classId)
         {
             var response = await _httpClient.GetAsync($"api/Student/class?classId={classId}");

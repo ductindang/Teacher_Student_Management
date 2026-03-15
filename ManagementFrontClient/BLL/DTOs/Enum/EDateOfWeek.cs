@@ -9,6 +9,8 @@ namespace BLL.DTOs.Enum
 {
     public enum EDateOfWeek
     {
+        [Display(Name = "Chủ nhật")]
+        Sunday = 0,
         [Display(Name = "Thứ 2")]
         Monday = 1,
         [Display(Name = "Thứ 3")]

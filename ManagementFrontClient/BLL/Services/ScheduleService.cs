@@ -1,5 +1,6 @@
 ﻿using BLL.DTOs;
 using BLL.IServices;
+using BLL.Response;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -82,6 +83,25 @@ namespace BLL.Services
                 Console.WriteLine($"An error occurred: {ex.Message}");
                 return null!;
             }
+        }
+
+        public async Task<IEnumerable<ClassDetailResponse>> GetScheduleByTeacherId(int teacherId)
+        {
+            var response = await _httpClient.GetAsync($"api/schedule/by-teacher/{teacherId}");
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+            var classes = JsonConvert.DeserializeObject<IEnumerable<ClassDetailResponse>>(jsonString);
+
+            return classes!;
+        }
+        public async Task<IEnumerable<ClassDetailResponse>> GetScheduleByStudentId(int studentId)
+        {
+            var response = await _httpClient.GetAsync($"api/schedule/by-student/{studentId}");
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+            var classes = JsonConvert.DeserializeObject<IEnumerable<ClassDetailResponse>>(jsonString);
+
+            return classes!;
         }
         public async Task<Schedule> InsertSchedule(Schedule obj)
         {

@@ -1,4 +1,5 @@
 ﻿using DAL.Models;
+using DAL.Response;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,7 @@ namespace DAL.Repositories.IRepository
     {
         Task<IEnumerable<Schedule>> InsertMany(IEnumerable<Schedule> schedules);
         Task<List<Schedule>> GetByClassId(int classId);
+        public Task<IEnumerable<ClassDetailResponse>> GetAllScheduleByTeacher(int teacherId);
+        public Task<IEnumerable<ClassDetailResponse>> GetAllScheduleByStudent(int studentId);
     }
 }

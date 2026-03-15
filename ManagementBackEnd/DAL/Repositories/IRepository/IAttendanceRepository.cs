@@ -1,13 +1,13 @@
 ﻿using DAL.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DAL.Response;
 
 namespace DAL.Repositories.IRepository
 {
     public interface IAttendanceRepository : IGenericRepository<Attendance>
     {
+        Task<Attendance> GetAttendanceByClass(int classId);
+        Task<Attendance> GetAttendanceBySchedule(int scheduleId);
+        Task<Attendance> GetAttendanceByStudent(int studentId);
+        public Task<IEnumerable<AttendanceScheduleClassResponse>> GetAttendanceDetails(int studentId, int classId);
     }
 }

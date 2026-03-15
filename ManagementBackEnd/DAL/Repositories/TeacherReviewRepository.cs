@@ -1,12 +1,8 @@
 ﻿using DAL.Data;
 using DAL.Models;
 using DAL.Repositories.IRepository;
+using DAL.Response;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
@@ -18,12 +14,37 @@ namespace DAL.Repositories
             _context = context;
         }
 
-        public async Task<List<TeacherReview>> GetByTeacherId(int teacherId)
+        public async Task<List<TeacherReviewResponse>> GetByTeacherId(int teacherId)
         {
-            return await _context.TeachersReviews
-                .Where(x => x.TeacherId == teacherId)
-                .OrderByDescending(x => x.CreatedAt)
-                .ToListAsync();
-        } 
+            var data = from tr in _context.TeachersReviews
+                join st in _context.Students on tr.StudentId equals st.Id
+                where tr.TeacherId == teacherId
+                select new TeacherReviewResponse
+                {
+                    Id = tr.Id,
+                    TeacherId = teacherId,
+                    StudentId = tr.StudentId,
+                    StudentName = st.FullName,
+                    ClassId = tr.ClassId,
+                    Rating = tr.Rating,
+                    Comment = tr.Comment,
+                    CreatedAt = tr.CreatedAt
+                };
+            return await data.ToListAsync();
+        }
+
+        public async Task<TeacherReview> GetByTeacherStudentClass(int studentId, int classId)
+        {
+            return await _context.TeachersReviews.FirstOrDefaultAsync(re => re.StudentId == studentId && re.ClassId == classId);
+        }
+
+        public async Task<TeacherReview> GetByStudent(int studentId)
+        {
+            return await _context.TeachersReviews.FirstOrDefaultAsync(tear => tear.StudentId == studentId);
+        }
+        public async Task<TeacherReview> GetByClass(int classId)
+        {
+            return await _context.TeachersReviews.FirstOrDefaultAsync(tear => tear.ClassId == classId);
+        }
     }
 }

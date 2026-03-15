@@ -1,8 +1,6 @@
 ﻿using BLL.DTOs;
 using BLL.IServices;
-using BLL.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace AdminWeb.Controllers
 {
@@ -95,6 +93,11 @@ namespace AdminWeb.Controllers
             try
             {
                 var course = await _courseService.DeleteCourse(id);
+                if (course.Id != id)
+                {
+                    TempData["Error"] = "Không thể xóa vì dữ liệu đang được sử dụng";
+                    return View();
+                }
                 if (course != null)
                 {
                     TempData["Success"] = "Xóa khóa học thành công";

@@ -3,11 +3,6 @@ using DAL.Models;
 using DAL.Repositories.IRepository;
 using DAL.Response;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
@@ -37,5 +32,36 @@ namespace DAL.Repositories
                        };
             return await data.ToListAsync();
         }
+
+        public async Task<EnrollmentResponse> GetErollmentByClassAndStudent(int classId, int studentId)
+        {
+            var data = await (from e in _context.Enrollments
+                       join student in _context.Students on e.StudentId equals student.Id
+                       join classObj in _context.Classes on e.ClassId equals classObj.Id
+                       where e.ClassId == classId
+                            && e.StudentId == studentId
+                       select new EnrollmentResponse
+                       {
+                           Id = e.Id,
+                           EnrollDate = e.EnrollDate,
+                           Status = e.Status,
+                           StudentId = student.Id,
+                           StudentName = student.FullName,
+                           ClassId = classObj.Id,
+                           ClassName = classObj.Name
+                       }).FirstOrDefaultAsync();
+            return data!;
+        }
+
+        public async Task<Enrollment> GetEnrollmentByStudent(int studentId)
+        {
+            return await _context.Enrollments.FirstOrDefaultAsync(er => er.StudentId == studentId);
+        }
+        public async Task<Enrollment> GetEnrollmentByClass(int classId)
+        {
+            return await _context.Enrollments.FirstOrDefaultAsync(er => er.ClassId == classId);
+        }
+
+
     }
 }

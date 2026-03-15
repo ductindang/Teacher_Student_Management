@@ -2,12 +2,7 @@
 using BLL.IServices;
 using BLL.Response;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BLL.Services
 {
@@ -30,7 +25,7 @@ namespace BLL.Services
             return classes!;
         }
 
-        public async Task<Class> GetClassById(int id)
+        public async Task<ClassResponse> GetClassById(int id)
         {
             try
             {
@@ -38,7 +33,7 @@ namespace BLL.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var jsonString = await response.Content.ReadAsStringAsync();
-                    var obj = JsonConvert.DeserializeObject<Class>(jsonString);
+                    var obj = JsonConvert.DeserializeObject<ClassResponse>(jsonString);
                     return obj!;
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -57,6 +52,107 @@ namespace BLL.Services
                 return null!;
             }
         }
+
+        public async Task<IEnumerable<ClassDetailResponse>> GetClassDetailTodayByTeacherId(int teacherId)
+        {
+            var response = await _httpClient.GetAsync($"api/class/today-by-teacher/{teacherId}");
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+            var classes = JsonConvert.DeserializeObject<IEnumerable<ClassDetailResponse>>(jsonString);
+
+            return classes!;
+        }
+        public async Task<IEnumerable<ClassDetailResponse>> GetAllClassDetailByTeacherIdInProgress(int teacherId)
+        {
+            var response = await _httpClient.GetAsync($"api/class/in-progress/by-teacher/{teacherId}");
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(jsonString);
+            var classes = JsonConvert.DeserializeObject<IEnumerable<ClassDetailResponse>>(jsonString);
+
+            return classes!;
+        }
+        public async Task<IEnumerable<ClassDetailResponse>> GetAllClassDetailByTeacherIdUpcoming(int teacherId)
+        {
+            var response = await _httpClient.GetAsync($"api/class/upcomming/by-teacher/{teacherId}");
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(jsonString);
+            var classes = JsonConvert.DeserializeObject<IEnumerable<ClassDetailResponse>>(jsonString);
+
+            return classes!;
+        }
+        public async Task<IEnumerable<ClassDetailResponse>> GetAllClassDetailByTeacherIdFinished(int teacherId)
+        {
+            var response = await _httpClient.GetAsync($"api/class/finished/by-teacher/{teacherId}");
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(jsonString);
+            var classes = JsonConvert.DeserializeObject<IEnumerable<ClassDetailResponse>>(jsonString);
+
+            return classes!;
+        }
+
+        public async Task<IEnumerable<ClassDetailResponse>> GetClassDetailTodayByStudentId(int studentId)
+        {
+            var response = await _httpClient.GetAsync($"api/class/today-by-student/{studentId}");
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+            var classes = JsonConvert.DeserializeObject<IEnumerable<ClassDetailResponse>>(jsonString);
+
+            return classes!;
+        }
+        public async Task<IEnumerable<ClassDetailResponse>> GetAllClassDetailByStudentIdInProgress(int studentId)
+        {
+            var response = await _httpClient.GetAsync($"api/class/in-progress/by-student/{studentId}");
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(jsonString);
+            var classes = JsonConvert.DeserializeObject<IEnumerable<ClassDetailResponse>>(jsonString);
+
+            return classes!;
+        }
+        public async Task<IEnumerable<ClassDetailResponse>> GetAllClassDetailByStudentIdUpcoming(int studentId)
+        {
+            var response = await _httpClient.GetAsync($"api/class/upcomming/by-student/{studentId}");
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(jsonString);
+            var classes = JsonConvert.DeserializeObject<IEnumerable<ClassDetailResponse>>(jsonString);
+
+            return classes!;
+        }
+        public async Task<IEnumerable<ClassDetailResponse>> GetAllClassDetailByStudentIdFinished(int studentId)
+        {
+            var response = await _httpClient.GetAsync($"api/class/finished/by-student/{studentId}");
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(jsonString);
+            var classes = JsonConvert.DeserializeObject<IEnumerable<ClassDetailResponse>>(jsonString);
+
+            return classes!;
+        }
+        public async Task<IEnumerable<TeacherClassReviewResponse>> GetAllClassDetailAndReviewByStudentIdReview(int studentId)
+        {
+            var response = await _httpClient.GetAsync($"api/class/review/by-student/{studentId}");
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(jsonString);
+            var classes = JsonConvert.DeserializeObject<IEnumerable<TeacherClassReviewResponse>>(jsonString);
+
+            return classes!;
+        }
+        public async Task<IEnumerable<ClassDetailResponse>> GetAllClassDetailUpcoming()
+        {
+            var response = await _httpClient.GetAsync($"api/class/upcoming");
+
+            var jsonString = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(jsonString);
+            var classes = JsonConvert.DeserializeObject<IEnumerable<ClassDetailResponse>>(jsonString);
+
+            return classes!;
+        }
+
         public async Task<Class> InsertClass(Class obj)
         {
             try

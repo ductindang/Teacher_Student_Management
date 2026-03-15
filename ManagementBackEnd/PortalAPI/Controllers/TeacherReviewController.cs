@@ -1,6 +1,5 @@
 ﻿using DAL.Models;
 using DAL.Repositories.IRepository;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PortalAPI.Controllers
@@ -41,6 +40,17 @@ namespace PortalAPI.Controllers
                 return NotFound("Giáo viên này chưa có đánh giá nào!");
 
             return Ok(reviews);
+        }
+
+        [HttpGet("student/{studentId}/class/{classId}/")]
+        public async Task<IActionResult> GetByTeacherStudentClass(int studentId, int classId)
+        {
+            var review = await _reviewRepo.GetByTeacherStudentClass(studentId, classId);
+
+            if (review == null)
+                return NotFound("Không thấy đánh giá này");
+
+            return Ok(review);
         }
 
 

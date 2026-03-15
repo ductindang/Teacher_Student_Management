@@ -2,11 +2,7 @@
 using BLL.IServices;
 using BLL.Response;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace BLL.Services
 {
@@ -38,6 +34,33 @@ namespace BLL.Services
                 {
                     var jsonString = await response.Content.ReadAsStringAsync();
                     var obj = JsonConvert.DeserializeObject<Enrollment>(jsonString);
+                    return obj!;
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    return null!;
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    return null!;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return null!;
+            }
+        }
+        public async Task<EnrollmentResponse> GetEnrollmentByClassStudent(int classId, int studentId)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"api/Enrollment/by-class_student/{classId}/{studentId}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    var obj = JsonConvert.DeserializeObject<EnrollmentResponse>(jsonString);
                     return obj!;
                 }
                 else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)

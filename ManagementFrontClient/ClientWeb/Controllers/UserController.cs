@@ -1,4 +1,5 @@
 ﻿using BLL.DTOs;
+using BLL.DTOs.Enum;
 using BLL.IServices;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -8,10 +9,14 @@ namespace ClientWeb.Controllers
     public class UserController : Controller
     {
         private readonly IUserService _userService;
+        private readonly ITeacherService _teacherService;
+        private readonly IStudentService _studentService;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, ITeacherService teacherService, IStudentService studentService)
         {
             _userService = userService;
+            _teacherService = teacherService;
+            _studentService = studentService;
         }
 
         public IActionResult SignIn()
@@ -26,17 +31,37 @@ namespace ClientWeb.Controllers
             try
             {
                 var userCheck = await _userService.GetUserByEmailPass(email, password);
+                
                 if (userCheck != null)
                 {
-                    var userCheckJson = JsonConvert.SerializeObject(userCheck);
-                    HttpContext.Session.SetString("UserLogin", userCheckJson);
-                    return Ok("Login successful!");
+                    if (userCheck.RoleId == 0 || userCheck.RoleId == 1)
+                    {
+
+                        if (userCheck.Status != EAccountStatus.Active)
+                        {
+                            return StatusCode(500, "Tài khoản của bạn đã bị khóa, vui lòng liên hệ admin để biết thêm chi tiết");
+                        }
+                        var userCheckJson = JsonConvert.SerializeObject(userCheck);
+                        HttpContext.Session.SetString("UserLogin", userCheckJson);
+                        if(userCheck.RoleId == (int)ERoleName.Teacher)
+                        {
+                            var teacher = await _teacherService.GetTeacherByUserId(userCheck.Id);
+                            var teacherJson = JsonConvert.SerializeObject(teacher);
+                            HttpContext.Session.SetString("Teacher", teacherJson);
+                        }else if (userCheck.RoleId == (int)ERoleName.Student)
+                        {
+                            var student = await _studentService.GetStudentByUserId(userCheck.Id);
+                            var studentJson = JsonConvert.SerializeObject(student);
+                            HttpContext.Session.SetString("Student", studentJson);
+                        }
+                        return Ok("Đăng nhập thành công!");
+                    }
                 }
-                return NotFound("Invalid email or password");
+                return NotFound("Sai email hoặc mật khẩu");
             }
             catch
             {
-                return StatusCode(500, "System error. Please try again later");
+                return StatusCode(500, "Lỗi hệ thống. Vui lòng thử lại sau");
             }
         }
 
@@ -68,6 +93,57 @@ namespace ClientWeb.Controllers
             {
                 return BadRequest("Create user failed");
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(User user)
+        {
+            user.PasswordHash ??= "";
+
+            var userUpdate = await _userService.UpdateUser(user);
+
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                if (userUpdate != null)
+                {
+                    var userCheckJson = JsonConvert.SerializeObject(userUpdate);
+                    HttpContext.Session.SetString("UserLogin", userCheckJson);
+                    return Json(new
+                    {
+                        success = true,
+                        message = "Chỉnh sửa người dùng thành công"
+                    });
+                }
+
+                return Json(new
+                {
+                    success = false,
+                    message = "Không thể chỉnh sửa hồ sơ này"
+                });
+            }
+
+            if (userUpdate != null)
+            {
+                TempData["Success"] = "Chỉnh sửa hồ sơ thành công";
+                var userCheckJson = JsonConvert.SerializeObject(userUpdate);
+                HttpContext.Session.SetString("UserLogin", userCheckJson);
+                return RedirectToAction("Index");
+            }
+
+            TempData["Error"] = "Không thể chỉnh sửa người dùng này";
+            return View(user);
+        }
+
+        public async Task<IActionResult> Profile(int id)
+        {
+            var user = await _userService.GetUserById(id);
+            if (user == null)
+            {
+                TempData["Error"] = "Lỗi khi truy cập hồ sơ";
+                return View("Error");
+            }
+
+            return View(user);
         }
 
     }

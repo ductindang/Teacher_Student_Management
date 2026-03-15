@@ -12,6 +12,8 @@ namespace BLL.IServices
         Task<IEnumerable<User>> GetAllUsers();
         Task<User> GetUserByEmailPass(string email, string password);
         Task<User> InsertUser(User user);
+        Task<User> UpdateUser(User user);
         Task<User> GetUserByEmail(string email);
+        Task<User> GetUserById(int id);
     }
 }

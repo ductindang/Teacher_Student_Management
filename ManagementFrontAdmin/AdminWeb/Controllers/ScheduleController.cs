@@ -99,6 +99,11 @@ namespace AdminWeb.Controllers
         {
             var resultMessage = "Xóa lịch học không thành công";
             var schedule = await _scheduleService.DeleteSchedule(id);
+            if (schedule.Id != id)
+            {
+                TempData["Error"] = "Không thể xóa vì dữ liệu đang được sử dụng";
+                return View();
+            }
             if (schedule != null)
             {
                 TempData["Success"] = "Xóa lịch học thành công";

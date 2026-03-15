@@ -55,6 +55,34 @@ namespace BLL.Services
                 return null!;
             }
         }
+
+        public async Task<Teacher> GetTeacherByUserId(int userId)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"api/teacher/userId/{userId}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    var obj = JsonConvert.DeserializeObject<Teacher>(jsonString);
+                    return obj!;
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    return null!;
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    return null!;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return null!;
+            }
+        }
         public async Task<Teacher> InsertTeacher(Teacher obj)
         {
             try

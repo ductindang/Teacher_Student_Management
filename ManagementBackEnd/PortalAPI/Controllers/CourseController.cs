@@ -1,4 +1,5 @@
 ﻿using DAL.Models;
+using DAL.Repositories;
 using DAL.Repositories.IRepository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,12 @@ namespace PortalAPI.Controllers
     public class CourseController : ControllerBase
     {
         private readonly ICourseRepository _courseRepo;
+        private readonly IClassRepository _classRepository;
 
-        public CourseController(ICourseRepository courseRepo)
+        public CourseController(ICourseRepository courseRepo, IClassRepository classRepository)
         {
             _courseRepo = courseRepo;
+            _classRepository = classRepository;
         }
 
         [HttpGet]
@@ -72,6 +75,12 @@ namespace PortalAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Course>> Delete(int id)
         {
+            var cls = await _classRepository.GetClassByCourse(id);
+            if (cls != null)
+            {
+                return Conflict("Không thể xóa vì dữ liệu đang được sử dụng");
+            }
+
             var crs = await _courseRepo.GetById(id);
             try
             {

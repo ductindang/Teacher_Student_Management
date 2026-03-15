@@ -8,6 +8,7 @@ namespace DAL.Models.Enum
 {
     public enum EDateOfWeek
     {
+        Sunday = 0,
         Monday = 1,
         Tuesday = 2,
         Wednesday = 3,

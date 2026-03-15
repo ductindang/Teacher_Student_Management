@@ -1,8 +1,6 @@
 ﻿using BLL.DTOs;
 using BLL.IServices;
-using BLL.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Cryptography.X509Certificates;
 
 namespace AdminWeb.Controllers
 {
@@ -113,6 +111,11 @@ namespace AdminWeb.Controllers
             try
             {
                 var enrollment = await _enrollmentService.DeleteEnrollment(id);
+                if (enrollment.Id != id)
+                {
+                    TempData["Error"] = "Không thể xóa vì dữ liệu đang được sử dụng";
+                    return View();
+                }
                 if (enrollment != null)
                 {
                     TempData["Success"] = "Xóa đăng ký thành công";
